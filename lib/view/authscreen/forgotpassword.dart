@@ -4,7 +4,9 @@ import 'package:lottie/lottie.dart';
 import 'package:untitled4/custom/custombutton.dart';
 import 'package:untitled4/view/authscreen/otpscreen.dart';
 import 'package:untitled4/view/authscreen/signin.dart';
-import 'package:untitled4/custom/customtextformfield.dart';
+
+import '../../custom/customtextformfield.dart';
+
 
 class ForgetPassword extends StatefulWidget {
   const ForgetPassword({super.key});

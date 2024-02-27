@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled4/provider/add_customer_provider.dart';
+import 'package:untitled4/provider/authentication_provder.dart';
 
 
 import 'package:untitled4/view/UI_screen/Add_customer_screen.dart';
@@ -52,17 +55,30 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          appBarTheme: AppBarTheme(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) {
+          return AuthenticationProvider();
+        },),
+        ChangeNotifierProvider(create: (context) {
+          return CustomerRecordProvider();
+        },)
+        
+      ],
+      
+      
+      child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            appBarTheme: AppBarTheme(
 
-            backgroundColor: Colors.brown
+              backgroundColor: Colors.brown
+            ),
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
           ),
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: SignUpScreen());
+          home: SignUpScreen()),
+    );
   }
 }

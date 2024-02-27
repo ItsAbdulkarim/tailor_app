@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:untitled4/custom/container_audio_instruction.dart';
 import 'package:untitled4/custom/custom_radiolist_tile.dart';
 import 'package:untitled4/custom/custombutton.dart';
@@ -15,6 +17,7 @@ import 'package:untitled4/custom/custompament_order_status.dart';
 import 'package:untitled4/custom/customtextformfield.dart';
 import 'package:untitled4/custom/measurementfield.dart';
 import 'package:untitled4/custom/specialinstructioncontainer.dart';
+import 'package:untitled4/provider/add_customer_provider.dart';
 
 import 'package:untitled4/view/UI_screen/homescreen.dart';
 
@@ -30,74 +33,76 @@ class AddCustomerScreen extends StatefulWidget {
 }
 
 class _AddCustomerScreenState extends State<AddCustomerScreen> {
-  void addCustomerRecord() async {
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  // void addCustomerRecord() async {
+  //   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  //
+  //   String selectedMeasurement = selectmeasurement.toString();
+  //   String uid = FirebaseAuth.instance.currentUser!.uid;
+  //   int dt = DateTime.now().millisecondsSinceEpoch;
+  //   var taskRef = firebaseFirestore
+  //       .collection('Customerrecord')
+  //       .doc(uid)
+  //       .collection('Customerrecord')
+  //       .doc();
+  //
+  //   Map<String, dynamic> customerData = {
+  //     'dt': dt,
+  //     'taskid': taskRef.id,
+  //     'customerimg': '',
+  //     'name': Namecontroller.text.trim(),
+  //     'phone': phonecontroller.text.trim(),
+  //     'address': addresscontroller.text.trim(),
+  //     'gender': Gender,
+  //     'orderdate': Orderdatecontroller.text.trim(),
+  //     'deliverydate': Deliverydatecontroller.text.trim(),
+  //     'pamentstatus': pamentstatus,
+  //     'orderstatus': orderstatus,
+  //     'selectedworker': selectworker,
+  //     'selectedmeasurement': selectedMeasurement,
+  //   };
+  //
+  //   // Add measurement-specific fields based on the selected measurement
+  //   if (selectedMeasurement == 'SUITS') {
+  //     customerData.addAll({
+  //       'Suitquantity': shkamizquantity.text.trim(),
+  //       'suitamount': shkamizamount.text.trim(),
+  //       'kamizlength': kamizLengthController.text.trim(),
+  //       'asteenlength': sleeveLengthController.text.trim(),
+  //       'addnotes': addkamisnotesscontroller.text.trim(),
+  //       'frontpocket': firstshirtshl,
+  //       'onesidepocket': secondshirtshl,
+  //       'bothsidepocket': thirdshirtshl,
+  //       "gooldaman": fourthshirtshl,
+  //     });
+  //   } else if (selectedMeasurement == 'SHIRT') {
+  //     customerData.addAll({
+  //       'Shortquantity': shortquantitycontroller.text.trim(),
+  //       'shortamount': shortamountcontroller.text.trim(),
+  //       'addshortnotes': addshortnotecontroller.text.trim(),
+  //       "shortshoulderlength": shoulderController.text.trim(),
+  //       'slevelength': sleeveLengthController.text.trim(),
+  //     });
+  //   } else if (selectedMeasurement == 'PAINTS') {
+  //     customerData.addAll({
+  //       "paintamount": pantamountcontroller.text.trim(),
+  //       'paintquantity': pantquantitycontroller.text.trim(),
+  //     });
+  //   }
+  //
+  //   // Add the data to the Firestore collection
+  //   taskRef.set(customerData);
+  //
+  //   // await firebaseFirestore
+  //   //     .collection('CustomerRecord')
+  //   //     .add(customerData)
+  //   //     .then((DocumentReference document) {
+  //   //   print('Customer record added successfully with ID: ${document.id}');
+  //   // }).catchError((error) {
+  //   //   print('Error adding customer record: $error');
+  //   // });
+  // }
 
-    String selectedMeasurement = selectmeasurement.toString();
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    int dt = DateTime.now().millisecondsSinceEpoch;
-    var taskRef = firebaseFirestore
-        .collection('Customerrecord')
-        .doc(uid)
-        .collection('Customerrecord')
-        .doc();
 
-    Map<String, dynamic> customerData = {
-      'dt': dt,
-      'taskid': taskRef.id,
-      'customerimg': '',
-      'name': Namecontroller.text.trim(),
-      'phone': phonecontroller.text.trim(),
-      'address': addresscontroller.text.trim(),
-      'gender': Gender,
-      'orderdate': Orderdatecontroller.text.trim(),
-      'deliverydate': Deliverydatecontroller.text.trim(),
-      'pamentstatus': pamentstatus,
-      'orderstatus': orderstatus,
-      'selectedworker': selectworker,
-      'selectedmeasurement': selectedMeasurement,
-    };
-
-    // Add measurement-specific fields based on the selected measurement
-    if (selectedMeasurement == 'SUITS') {
-      customerData.addAll({
-        'Suitquantity': shkamizquantity.text.trim(),
-        'suitamount': shkamizamount.text.trim(),
-        'kamizlength': kamizLengthController.text.trim(),
-        'asteenlength': sleeveLengthController.text.trim(),
-        'addnotes': addkamisnotesscontroller.text.trim(),
-        'frontpocket': firstshirtshl,
-        'onesidepocket': secondshirtshl,
-        'bothsidepocket': thirdshirtshl,
-        "gooldaman": fourthshirtshl,
-      });
-    } else if (selectedMeasurement == 'SHIRT') {
-      customerData.addAll({
-        'Shortquantity': shortquantitycontroller.text.trim(),
-        'shortamount': shortamountcontroller.text.trim(),
-        'addshortnotes': addshortnotecontroller.text.trim(),
-        "shortshoulderlength": shoulderController.text.trim(),
-        'slevelength': sleeveLengthController.text.trim(),
-      });
-    } else if (selectedMeasurement == 'PAINTS') {
-      customerData.addAll({
-        "paintamount": pantamountcontroller.text.trim(),
-        'paintquantity': pantquantitycontroller.text.trim(),
-      });
-    }
-
-    // Add the data to the Firestore collection
-    taskRef.set(customerData);
-
-    // await firebaseFirestore
-    //     .collection('CustomerRecord')
-    //     .add(customerData)
-    //     .then((DocumentReference document) {
-    //   print('Customer record added successfully with ID: ${document.id}');
-    // }).catchError((error) {
-    //   print('Error adding customer record: $error');
-    // });
-  }
 
   var Namecontroller = TextEditingController();
   var phonecontroller = TextEditingController();
@@ -1425,8 +1430,26 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
               ),
               CustomButton(
                   onPressed: () {
-                    addCustomerRecord();
-                    setState(() {});
+                    //convert all to text.trim i possible
+                   context.read<CustomerRecordProvider>().addCustomerRecord(
+                       selectmeasurement.toString(),
+                       Namecontroller.text.trim(),
+                       phonecontroller.text.trim()
+                       ,
+                       addresscontroller.text.trim(),
+                       Gender.toString(),
+                       Orderdatecontroller.text.trim(),
+                       Deliverydatecontroller.text.trim(),
+                       pamentstatus, orderstatus, selectworker,
+                       shkamizquantity.text.trim(), shkamizamount.toString(),
+                       kamizLengthController.text.toString(),sleeveLengthController.toString(),
+                       addkamisnotesscontroller.toString(),
+                       firstshirtshl, secondshirtshl,
+                       thirdshirtshl, fourthshirtshl, shortquantitycontroller.toString(),
+                       shortamountcontroller.toString(), addshortnotecontroller.text.trim(),
+                       shoulderController.toString(), pantamountcontroller.toString(),
+                       pantquantitycontroller.toString());
+
                   },
                   color: Colors.brown,
                   text: 'Register')
