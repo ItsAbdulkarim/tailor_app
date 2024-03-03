@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
-class CustomerRecordProvider extends ChangeNotifier {
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  bool isLoading= false;
+class UpdateProvder extends ChangeNotifier {
+  bool isLoading = false;
 
-  Future<void> addCustomerRecord(BuildContext context,
+
+  Future<void> updateCustomerRecord(
+      String taskid,
+      BuildContext context,
       String selectmeasurement,
       String Name,
       String phone,
@@ -33,21 +35,20 @@ class CustomerRecordProvider extends ChangeNotifier {
       String pantamount,
       String pantquantity) async {
     try {
-      isLoading=true;
+      isLoading = true;
       notifyListeners();
-      String selectedMeasurement = selectmeasurement.toString();
       String uid = FirebaseAuth.instance.currentUser!.uid;
-      int dt = DateTime.now().millisecondsSinceEpoch;
 
-      var taskRef = _firestore
+
+      var taskRef = FirebaseFirestore.instance
           .collection('Customerrecord')
           .doc(uid)
           .collection('Customerrecord')
-          .doc();
+          .doc(taskid);
 
-      Map<String, dynamic> customerData = {
-        'dt': dt,
-        'taskid': taskRef.id,
+      String selectedMeasurement = selectmeasurement.toString();
+
+      Map<String, dynamic> updatedData = {
         'customerimg': '',
         'name': Name.trim(),
         'phone': phone.trim(),
@@ -62,7 +63,7 @@ class CustomerRecordProvider extends ChangeNotifier {
       };
 
       if (selectedMeasurement == 'SUITS') {
-        customerData.addAll({
+        updatedData.addAll({
           'Suitquantity': shkamizquantity.trim(),
           'suitamount': shkamizamount.trim(),
           'kamizlength': kamizLength.trim(),
@@ -74,7 +75,7 @@ class CustomerRecordProvider extends ChangeNotifier {
           'gooldaman': fourthshirtshl,
         });
       } else if (selectedMeasurement == 'SHIRT') {
-        customerData.addAll({
+        updatedData.addAll({
           'Shortquantity': shortquantity.trim(),
           'shortamount': shortamount.trim(),
           'addshortnotes': addshortnotes.trim(),
@@ -82,25 +83,23 @@ class CustomerRecordProvider extends ChangeNotifier {
           'slevelength': sleeveLength.trim(),
         });
       } else if (selectedMeasurement == 'PAINTS') {
-        customerData.addAll({
+        updatedData.addAll({
           'paintamount': pantamount.trim(),
           'paintquantity': pantquantity.trim(),
         });
       }
 
-      await taskRef.set(customerData);
+      await taskRef.update(updatedData);
 
-      // Notify listeners after the record is added
+      // Notify listeners after the record is updated
       notifyListeners();
     } catch (error) {
-      print('Error adding customer record: $error');
+      print('Error updating customer record: $error');
       // Handle error as needed
-    }finally{
-
-      isLoading=false;
+    } finally {
+      isLoading = false;
       notifyListeners();
       Navigator.pop(context);
-
     }
   }
 }

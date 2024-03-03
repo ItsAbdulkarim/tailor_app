@@ -4,6 +4,10 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled4/provider/add_customer_provider.dart';
 import 'package:untitled4/provider/authentication_provder.dart';
+import 'package:untitled4/provider/deleteprovder.dart';
+import 'package:untitled4/provider/paid_unpaid_screen_provider.dart';
+import 'package:untitled4/provider/see_customer_provder.dart';
+import 'package:untitled4/provider/update_provider.dart';
 
 
 import 'package:untitled4/view/UI_screen/Add_customer_screen.dart';
@@ -62,8 +66,20 @@ class MyApp extends StatelessWidget {
         },),
         ChangeNotifierProvider(create: (context) {
           return CustomerRecordProvider();
+        },),
+        ChangeNotifierProvider(create: (context) {
+          return CustomerDetailPorvider();
+        },),
+        ChangeNotifierProvider(create: (context) {
+          return UpdateProvder();
+
+        },),
+        ChangeNotifierProvider(create: (context) {
+          return DeleteRecordProvider();
+        },),
+        ChangeNotifierProvider(create: (context) {
+          return PaidUnPaidProvider();
         },)
-        
       ],
       
       

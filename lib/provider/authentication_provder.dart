@@ -95,4 +95,49 @@ class AuthenticationProvider extends ChangeNotifier {
       Navigator.pop(context);
     }
   }
+
+///////logout method
+  Future<void> signOut(BuildContext context) async {
+    try {
+      isLoading = true;
+      notifyListeners();
+      await FirebaseAuth.instance.signOut();
+      showToast('User Successfully logout');
+    } on FirebaseException catch (e) {
+      showToast(e.message.toString());
+    } finally {
+      isLoading = false;
+      notifyListeners();
+      Navigator.pop(context);
+    }
+  }
+
+  //delete account
+  Future<void> deleteUserAccount(BuildContext context)async{
+    try{
+
+      isLoading = true;
+      notifyListeners();
+      await FirebaseAuth.instance.currentUser!.delete();
+      showToast('User Successfully logout');
+
+    }on FirebaseException catch(e){
+
+      showToast(e.message.toString());
+    }finally{
+
+      isLoading=false;
+      notifyListeners();
+      Navigator.pop(context);
+
+    }
+
+
+    //delete account
+
+
+  }
+
+
+
 }

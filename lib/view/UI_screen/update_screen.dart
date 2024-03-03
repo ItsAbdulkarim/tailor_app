@@ -19,92 +19,25 @@ import 'package:untitled4/custom/customtextformfield.dart';
 import 'package:untitled4/custom/measurementfield.dart';
 import 'package:untitled4/custom/specialinstructioncontainer.dart';
 import 'package:untitled4/provider/add_customer_provider.dart';
+import 'package:untitled4/provider/update_provider.dart';
 
 import 'package:untitled4/view/UI_screen/homescreen.dart';
 
 import 'bottomnavigationbar.dart';
+// after clicking on card .from the card navigate here to update
 
-class AddCustomerScreen extends StatefulWidget {
-  const AddCustomerScreen({
-    super.key,
-  });
+class UpdateCustomerScreen extends StatefulWidget {
+  final DocumentSnapshot taskSnapshot;
+  final String taskID;
+
+  const UpdateCustomerScreen(
+      {super.key, required this.taskSnapshot, required this.taskID});
 
   @override
-  State<AddCustomerScreen> createState() => _AddCustomerScreenState();
+  State<UpdateCustomerScreen> createState() => _UpdateCustomerScreenState();
 }
 
-class _AddCustomerScreenState extends State<AddCustomerScreen> {
-  // void addCustomerRecord() async {
-  //   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  //
-  //   String selectedMeasurement = selectmeasurement.toString();
-  //   String uid = FirebaseAuth.instance.currentUser!.uid;
-  //   int dt = DateTime.now().millisecondsSinceEpoch;
-  //   var taskRef = firebaseFirestore
-  //       .collection('Customerrecord')
-  //       .doc(uid)
-  //       .collection('Customerrecord')
-  //       .doc();
-  //
-  //   Map<String, dynamic> customerData = {
-  //     'dt': dt,
-  //     'taskid': taskRef.id,
-  //     'customerimg': '',
-  //     'name': Namecontroller.text.trim(),
-  //     'phone': phonecontroller.text.trim(),
-  //     'address': addresscontroller.text.trim(),
-  //     'gender': Gender,
-  //     'orderdate': Orderdatecontroller.text.trim(),
-  //     'deliverydate': Deliverydatecontroller.text.trim(),
-  //     'pamentstatus': pamentstatus,
-  //     'orderstatus': orderstatus,
-  //     'selectedworker': selectworker,
-  //     'selectedmeasurement': selectedMeasurement,
-  //   };
-  //
-  //   // Add measurement-specific fields based on the selected measurement
-  //   if (selectedMeasurement == 'SUITS') {
-  //     customerData.addAll({
-  //       'Suitquantity': shkamizquantity.text.trim(),
-  //       'suitamount': shkamizamount.text.trim(),
-  //       'kamizlength': kamizLengthController.text.trim(),
-  //       'asteenlength': sleeveLengthController.text.trim(),
-  //       'addnotes': addkamisnotesscontroller.text.trim(),
-  //       'frontpocket': firstshirtshl,
-  //       'onesidepocket': secondshirtshl,
-  //       'bothsidepocket': thirdshirtshl,
-  //       "gooldaman": fourthshirtshl,
-  //     });
-  //   } else if (selectedMeasurement == 'SHIRT') {
-  //     customerData.addAll({
-  //       'Shortquantity': shortquantitycontroller.text.trim(),
-  //       'shortamount': shortamountcontroller.text.trim(),
-  //       'addshortnotes': addshortnotecontroller.text.trim(),
-  //       "shortshoulderlength": shoulderController.text.trim(),
-  //       'slevelength': sleeveLengthController.text.trim(),
-  //     });
-  //   } else if (selectedMeasurement == 'PAINTS') {
-  //     customerData.addAll({
-  //       "paintamount": pantamountcontroller.text.trim(),
-  //       'paintquantity': pantquantitycontroller.text.trim(),
-  //     });
-  //   }
-  //
-  //   // Add the data to the Firestore collection
-  //   taskRef.set(customerData);
-  //
-  //   // await firebaseFirestore
-  //   //     .collection('CustomerRecord')
-  //   //     .add(customerData)
-  //   //     .then((DocumentReference document) {
-  //   //   print('Customer record added successfully with ID: ${document.id}');
-  //   // }).catchError((error) {
-  //   //   print('Error adding customer record: $error');
-  //   // });
-  // }
-
-
-
+class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
   var Namecontroller = TextEditingController();
   var phonecontroller = TextEditingController();
   var addresscontroller = TextEditingController();
@@ -190,6 +123,25 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
       TextEditingController();
 
   TextEditingController addkamisnotesscontroller = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    //initialize here
+    Namecontroller.text = widget.taskSnapshot['name'];
+    phonecontroller.text = widget.taskSnapshot['phone'];
+    addresscontroller.text = widget.taskSnapshot['address'];
+    Gender = widget.taskSnapshot['gender'];
+    //
+    orderstatus = widget.taskSnapshot['orderdate'];
+    Deliverydatecontroller.text = widget.taskSnapshot['deliverydate'];
+    pamentstatus = widget.taskSnapshot['pamentstatus'];
+    orderstatus = widget.taskSnapshot['orderstatus'];
+    selectworker = widget.taskSnapshot['selectedworker'];
+    shortquantitycontroller.text=widget.taskSnapshot['Shortquantity'];
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -251,11 +203,10 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                 ],
               ),
               CustomTextField(
-                validator: (value){
-                  if(value!.isEmpty||value==null){
+                validator: (value) {
+                  if (value!.isEmpty || value == null) {
                     return 'please provide ';
-
-                  }else{
+                  } else {
                     return null;
                   }
                 },
@@ -1438,9 +1389,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                 height: 20,
               ),
               CustomButton(
-                  onPressed: () async{
+                  onPressed: () async {
                     //convert all to text.trim if possible
-
 
                     showDialog(
                       context: context,
@@ -1457,40 +1407,73 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                               SizedBox(
                                 height: 20,
                               ),
-                              Text('Registering user...'),
+                              Text('Update user...'),
                             ],
                           ),
                         );
                       },
                     );
+                    await Future.delayed(Duration(milliseconds: 500));
 
+                    await context.read<UpdateProvder>().updateCustomerRecord(
+                        widget.taskID,
+                        context,
+                        selectmeasurement.toString(),
+                        Namecontroller.text.trim(),
+                        phonecontroller.text.trim(),
+                        addresscontroller.text.trim(),
+                        Gender.toString(),
+                        Orderdatecontroller.text.trim(),
+                        Deliverydatecontroller.text.trim(),
+                        pamentstatus,
+                        orderstatus,
+                        selectworker,
+                        shkamizquantity.text.trim(),
+                        shkamizamount.toString(),
+                        kamizLengthController.text.trim(),
+                        sleeveLengthController.text.trim(),
+                        addkamisnotesscontroller.text.trim(),
+                        firstshirtshl,
+                        secondshirtshl,
+                        thirdshirtshl,
+                        fourthshirtshl,
+                        shortquantitycontroller.text.trim(),
+                        shortamountcontroller.text.trim(),
+                        addshortnotecontroller.text.trim(),
+                        shoulderController.text.trim(),
+                        pantamountcontroller.text.trim(),
+                        pantquantitycontroller.text.trim());
 
-
-
-
-
-                  await context.read<CustomerRecordProvider>().addCustomerRecord(context,
-                       selectmeasurement.toString(),
-                       Namecontroller.text.trim(),
-                       phonecontroller.text.trim()
-                       ,
-                       addresscontroller.text.trim(),
-                       Gender.toString(),
-                       Orderdatecontroller.text.trim(),
-                       Deliverydatecontroller.text.trim(),
-                       pamentstatus, orderstatus, selectworker,
-                       shkamizquantity.text.trim(), shkamizamount.toString(),
-                       kamizLengthController.text.trim(),sleeveLengthController.text.trim(),
-                       addkamisnotesscontroller.text.trim(),
-                       firstshirtshl, secondshirtshl,
-                       thirdshirtshl, fourthshirtshl, shortquantitycontroller.text.trim(),
-                       shortamountcontroller.text.trim(), addshortnotecontroller.text.trim(),
-                       shoulderController.text.trim(), pantamountcontroller.text.trim(),
-                       pantquantitycontroller.text.trim());
-
+                    //   addCustomerRecord(
+                    //           context,
+                    //           selectmeasurement.toString(),
+                    //           Namecontroller.text.trim(),
+                    //           phonecontroller.text.trim(),
+                    //           addresscontroller.text.trim(),
+                    //           Gender.toString(),
+                    //           Orderdatecontroller.text.trim(),
+                    //           Deliverydatecontroller.text.trim(),
+                    //           pamentstatus,
+                    //           orderstatus,
+                    //           selectworker,
+                    //           shkamizquantity.text.trim(),
+                    //           shkamizamount.toString(),
+                    //           kamizLengthController.text.trim(),
+                    //           sleeveLengthController.text.trim(),
+                    //           addkamisnotesscontroller.text.trim(),
+                    //           firstshirtshl,
+                    //           secondshirtshl,
+                    //           thirdshirtshl,
+                    //           fourthshirtshl,
+                    //           shortquantitycontroller.text.trim(),
+                    //           shortamountcontroller.text.trim(),
+                    //           addshortnotecontroller.text.trim(),
+                    //           shoulderController.text.trim(),
+                    //           pantamountcontroller.text.trim(),
+                    //           pantquantitycontroller.text.trim());
                   },
                   color: Colors.brown,
-                  text: 'Register')
+                  text: 'Update')
             ],
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:untitled4/custom/customcontainer_home.dart';
 import 'package:untitled4/view/UI_screen/Add_customer_screen.dart';
 import 'package:untitled4/view/UI_screen/seecustomerscreen.dart';
+import 'package:untitled4/view/UI_screen/update_order_screen_first.dart';
 import 'package:untitled4/view/UI_screen/worker_list_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -63,6 +64,10 @@ class HomeScreen extends StatelessWidget {
                 title: 'View Customer',
                 subtitle: 'See details'),
             CustomContainer(
+              ontap: (){
+
+                Get.to(SeeCustomerDetailUpdateScreen());
+              },
                 img: 'images/todayorder.png',
                 title: 'Update Orders',
                 subtitle: 'See details'),
