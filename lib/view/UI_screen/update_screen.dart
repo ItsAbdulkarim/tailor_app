@@ -23,6 +23,8 @@ import 'package:untitled4/provider/update_provider.dart';
 
 import 'package:untitled4/view/UI_screen/homescreen.dart';
 
+import '../../provider/addworker_provider.dart';
+import '../../provider/see_customer_provder.dart';
 import 'bottomnavigationbar.dart';
 // after clicking on card .from the card navigate here to update
 
@@ -66,12 +68,11 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
   bool sixthshirtp = false;
 
   //for shalwarzizchekbox
-  bool firstshirtshl = false;
-  bool secondshirtshl = false;
-  bool thirdshirtshl = false;
-  bool fourthshirtshl = false;
-  bool fifthshirtshl = false;
-  bool sixthshirtshl = false;
+  //for shalwarzizchekbox
+  bool frontsuitpocket = false;
+  bool sidesuitpocket = false;
+  bool goaldaman = false;
+  bool chorasdaman = false;
 
 //short controller
   TextEditingController shortquantitycontroller = TextEditingController();
@@ -105,24 +106,28 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
   TextEditingController flyLengthController = TextEditingController();
 //controller for shalwar kamiz
 
+
   TextEditingController shkamizquantity = TextEditingController();
   TextEditingController shkamizamount = TextEditingController();
-  TextEditingController kamizchestSizeController = TextEditingController();
-  TextEditingController kamizLengthController = TextEditingController();
-  TextEditingController kamizsleeveLengthController = TextEditingController();
-  TextEditingController kamizshoulderWidthController = TextEditingController();
+  TextEditingController suitlengthController = TextEditingController();
+  TextEditingController suitsleeveController = TextEditingController();
+  TextEditingController suitshoulderController = TextEditingController();
+  TextEditingController suitkalarController = TextEditingController();
 
-  TextEditingController shalwarwaistSizeController = TextEditingController();
-  TextEditingController shalwarhipSizeController = TextEditingController();
-  TextEditingController shalwarinseamLengthController = TextEditingController();
-  TextEditingController shalwaroutseamLengthController =
-      TextEditingController();
-  TextEditingController shalwarthighCircumferenceController =
-      TextEditingController();
-  TextEditingController shalwarbottomOpeningController =
-      TextEditingController();
+  TextEditingController suitchestController = TextEditingController();
+  TextEditingController suitarmholeController = TextEditingController();
+  TextEditingController suitdamanController = TextEditingController();
+  TextEditingController suitshalwarController =
+  TextEditingController();
+  TextEditingController suitpanchaController =
+  TextEditingController();
 
-  TextEditingController addkamisnotesscontroller = TextEditingController();
+
+  TextEditingController suitnotescontroller = TextEditingController();
+
+
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -133,12 +138,32 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
     addresscontroller.text = widget.taskSnapshot['address'];
     Gender = widget.taskSnapshot['gender'];
     //
-    orderstatus = widget.taskSnapshot['orderdate'];
+    Orderdatecontroller.text = widget.taskSnapshot['orderdate'];
     Deliverydatecontroller.text = widget.taskSnapshot['deliverydate'];
     pamentstatus = widget.taskSnapshot['pamentstatus'];
     orderstatus = widget.taskSnapshot['orderstatus'];
     selectworker = widget.taskSnapshot['selectedworker'];
-    shortquantitycontroller.text=widget.taskSnapshot['Shortquantity'];
+    selectmeasurement=widget.taskSnapshot[ 'selectedmeasurement'];
+    shkamizquantity.text=widget.taskSnapshot[  'Suitquantity'];
+    shkamizamount.text=widget.taskSnapshot[ 'suitamount'];
+    suitlengthController.text=widget.taskSnapshot['kamizlength'];
+    suitsleeveController.text=widget.taskSnapshot[ 'asteenlength'];
+    suitshoulderController.text=widget.taskSnapshot[ 'suitshoulderlength'];
+    suitkalarController.text=widget.taskSnapshot[ 'suitkalar'];
+    suitchestController.text=widget.taskSnapshot['suitchati'];
+    suitarmholeController.text=widget.taskSnapshot[  'suitbaghal'];
+    suitdamanController.text=widget.taskSnapshot[ 'suitdaman'];
+    suitpanchaController.text=widget.taskSnapshot['suitshalwarpancha'];
+    suitshalwarController.text=widget.taskSnapshot[  'suitshalwar'];
+    frontsuitpocket=widget.taskSnapshot['frontpocket'];
+    sidesuitpocket=widget.taskSnapshot[   'onesidepocket'];
+    goaldaman=widget.taskSnapshot['goaldaman'];
+    chorasdaman=widget.taskSnapshot[  'chorasdaman'];
+    suitnotescontroller.text=widget.taskSnapshot[  'addnotes'];
+
+
+
+
 
     super.initState();
   }
@@ -146,13 +171,14 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFFFFFF),
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade800,
+        backgroundColor: Color(0xFFFFFFFF),
         centerTitle: true,
         title: Text(
-          'Add customer',
+          'Update Customer',
           style: TextStyle(
-              color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+              color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
         ),
         automaticallyImplyLeading: false,
         leading: InkWell(
@@ -162,7 +188,7 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
           child: Icon(
             Icons.arrow_back_ios,
             size: 25,
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
       ),
@@ -171,10 +197,10 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
           padding: const EdgeInsets.all(15),
           child: Column(
             children: [
-              CircleAvatar(
-                radius: 80,
-                backgroundImage: AssetImage('images/karim.jpg'),
-              ),
+
+
+
+
               Align(
                 alignment: Alignment.topLeft,
                 child: Column(
@@ -256,11 +282,11 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
                 children: [
                   Expanded(
                     child: RadioListTile(
-                      fillColor: MaterialStateProperty.all(Colors.brown),
+                      fillColor: MaterialStateProperty.all(Colors.black),
                       shape: ContinuousRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       contentPadding: EdgeInsets.zero,
-                      tileColor: Colors.brown.shade200,
+                      tileColor: Color(0xFFF1F1F1),
                       value: 'Male',
                       title: Text('Male'),
                       groupValue: Gender,
@@ -276,11 +302,11 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
                   ),
                   Expanded(
                     child: RadioListTile(
-                      fillColor: MaterialStateProperty.all(Colors.brown),
+                      fillColor: MaterialStateProperty.all(Colors.black),
                       shape: ContinuousRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       contentPadding: EdgeInsets.zero,
-                      tileColor: Colors.brown.shade200,
+                      tileColor: Color(0xFFF1F1F1),
                       value: 'Female',
                       title: Text('Female'),
                       groupValue: Gender,
@@ -365,6 +391,10 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
                       'ORDER STATUS',
                       'NORMAL',
                       'URGENT',
+                      'ACTIVE',
+                      'COMPLETED',
+                      'DELEVERED',
+                      'CANCLE',
                     ],
                     onChanged: (value) {
                       setState(() {
@@ -377,19 +407,48 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
               SizedBox(
                 height: 15,
               ),
-              CustomDropdown(
-                  value: selectworker,
-                  items: [
-                    'SELECT WORKER',
-                    'Abdul karim',
-                    'Luqman hakeem',
-                    'Suleman khan',
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      selectworker = value.toString();
-                    });
-                  }),
+              StreamBuilder<QuerySnapshot>(
+                stream: context.read<AddWorkerProvider>().getWorker(),
+                builder: (context, snapshot) {
+                  print('Snapshot: $snapshot');
+                  print('Data Length: ${snapshot.data?.docs.length}');
+                  List<DocumentSnapshot> workerlist = snapshot.data?.docs ?? [];
+                  if (snapshot.connectionState == ConnectionState.none) {
+                    return const Center(child: Text('No connection yet'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return SizedBox();
+                  }
+
+                  print('thissisissssssssssssss$workerlist');
+
+                  if (workerlist.isEmpty) {
+                    return const Center(child: Text('No Tasks Saved Yet'));
+                  }
+
+                  if (snapshot.hasData) {
+                    return CustomDropdown(
+                        value: selectworker,
+                        items: [
+                          'SELECT WORKER',
+                          ...workerlist
+                              .map((worker) => worker['workername'] as String)
+                              .toList(),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            selectworker = value.toString();
+                          });
+                        });
+                  }
+                  if (snapshot.hasError) {
+                    return const Center(child: Text('Something went wrong'));
+                  }
+
+                  return const Center(
+                      child: Text('Unexpected ConnectionState'));
+                },
+              ),
               SizedBox(
                 height: 10,
               ),
@@ -1089,12 +1148,12 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
                                     ),
                                     Expanded(
                                         child: Padding(
-                                      padding:
+                                          padding:
                                           const EdgeInsets.only(right: 110),
-                                      child: MeasurementTextField(
-                                          labelText: '',
-                                          controller: shkamizquantity),
-                                    ))
+                                          child: MeasurementTextField(
+                                              labelText: '',
+                                              controller: shkamizquantity),
+                                        ))
                                   ],
                                 ),
                                 SizedBox(
@@ -1112,12 +1171,12 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
                                     ),
                                     Expanded(
                                         child: Padding(
-                                      padding:
+                                          padding:
                                           const EdgeInsets.only(right: 110),
-                                      child: MeasurementTextField(
-                                          labelText: '',
-                                          controller: shkamizamount),
-                                    ))
+                                          child: MeasurementTextField(
+                                              labelText: '',
+                                              controller: shkamizamount),
+                                        ))
                                   ],
                                 ),
                                 SizedBox(
@@ -1127,182 +1186,159 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
                                   children: [
                                     Expanded(
                                       child: MeasurementTextField(
-                                          labelText: "kamis Length",
-                                          controller: kamizLengthController),
+                                          labelText: "لمبائی /Length",
+                                          controller: suitlengthController),
                                     ),
                                     SizedBox(
                                       width: 10,
                                     ),
                                     Expanded(
                                       child: MeasurementTextField(
-                                          labelText: "Sleeve",
+                                          labelText: "آستین /Sleeve",
                                           controller:
-                                              kamizsleeveLengthController),
+                                          suitsleeveController),
                                     ),
                                     SizedBox(
                                       width: 10,
                                     ),
                                     Expanded(
                                       child: MeasurementTextField(
-                                          labelText: "SHOULDER",
+                                          labelText: "تیرا /Shoulder",
                                           controller:
-                                              kamizshoulderWidthController),
+                                          suitshoulderController),
                                     ),
-                                  ],
-                                ),
-                                // SizedBox(
-                                //   height: 10,
-                                // ),
-                                // Row(
-                                //   children: [
-                                //     Expanded(
-                                //       child: MeasurementTextField(
-                                //           labelText: "CHEST",
-                                //           controller: kamizchestSizeController),
-                                //     ),
-                                //     SizedBox(
-                                //       width: 10,
-                                //     ),
-                                //     Expanded(
-                                //       child: MeasurementTextField(
-                                //           labelText: "Waist Size",
-                                //           controller:
-                                //               shalwarwaistSizeController),
-                                //     ),
-                                //     SizedBox(
-                                //       width: 10,
-                                //     ),
-                                //     Expanded(
-                                //       child: MeasurementTextField(
-                                //           labelText: "Hip Size",
-                                //           controller: shalwarhipSizeController),
-                                //     ),
-                                //   ],
-                                // ),
-                                // SizedBox(
-                                //   height: 10,
-                                // ),
-                                // Row(
-                                //   children: [
-                                //     Expanded(
-                                //       child: MeasurementTextField(
-                                //           labelText: "Inseam Length (Shalwar)",
-                                //           controller:
-                                //               shalwarinseamLengthController),
-                                //     ),
-                                //     SizedBox(
-                                //       width: 10,
-                                //     ),
-                                //     Expanded(
-                                //       child: MeasurementTextField(
-                                //           labelText:
-                                //               "Outseam Length (Shalwar):",
-                                //           controller:
-                                //               shalwaroutseamLengthController),
-                                //     ),
-                                //     SizedBox(
-                                //       width: 10,
-                                //     ),
-                                //     Expanded(
-                                //       child: MeasurementTextField(
-                                //           labelText: "Bottom Opening (Shalwar)",
-                                //           controller:
-                                //               shalwarbottomOpeningController),
-                                //     ),
-                                //   ],
-                                // ),
-                                // SizedBox(
-                                //   height: 10,
-                                // ),
-                                Row(
-                                  children: [
-                                    Checkbox(
-                                      fillColor: MaterialStateProperty.all(
-                                          Colors.brown),
-                                      value: firstshirtshl,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          firstshirtshl = value!;
-                                        });
-                                      },
-                                    ),
-                                    Text('first'),
-                                    SizedBox(
-                                      width: 50,
-                                    ),
-                                    Checkbox(
-                                      fillColor: MaterialStateProperty.all(
-                                          Colors.brown),
-                                      value: secondshirtshl,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          secondshirtshl = value!;
-                                        });
-                                      },
-                                    ),
-                                    Text('second'),
-                                    SizedBox(
-                                      width: 40,
-                                    ),
-                                    Checkbox(
-                                      fillColor: MaterialStateProperty.all(
-                                          Colors.brown),
-                                      value: thirdshirtshl,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          thirdshirtshl = value!;
-                                        });
-                                      },
-                                    ),
-                                    Text('third'),
                                   ],
                                 ),
                                 SizedBox(
                                   height: 10,
                                 ),
-                                // Row(
-                                //   children: [
-                                //     Checkbox(
-                                //       fillColor: MaterialStateProperty.all(
-                                //           Colors.brown),
-                                //       value: fourthshirtshl,
-                                //       onChanged: (value) {
-                                //         setState(() {
-                                //           fourthshirtshl = value!;
-                                //         });
-                                //       },
-                                //     ),
-                                //     Text('forth'),
-                                //     SizedBox(
-                                //       width: 45,
-                                //     ),
-                                //     Checkbox(
-                                //       fillColor: MaterialStateProperty.all(
-                                //           Colors.brown),
-                                //       value: fifthshirtshl,
-                                //       onChanged: (value) {
-                                //         setState(() {
-                                //           fifthshirtshl = value!;
-                                //         });
-                                //       },
-                                //     ),
-                                //     Text('fifth'),
-                                //     SizedBox(
-                                //       width: 62,
-                                //     ),
-                                //     Checkbox(
-                                //       fillColor: MaterialStateProperty.all(
-                                //           Colors.brown),
-                                //       value: sixthshirtshl,
-                                //       onChanged: (value) {
-                                //         setState(() {
-                                //           sixthshirtshl = value!;
-                                //         });
-                                //       },
-                                //     ),
-                                //     Text('sixth'),
-                                //   ],
-                                // ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: MeasurementTextField(
+                                          labelText: "کلار /Kalar",
+                                          controller: suitkalarController),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: MeasurementTextField(
+                                          labelText: "چھاتی /Chest",
+                                          controller:
+                                          suitchestController),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: MeasurementTextField(
+                                          labelText: "بغل /Armhole",
+                                          controller: suitarmholeController),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: MeasurementTextField(
+                                          labelText: "دامن /Daaman",
+                                          controller:
+                                          suitdamanController),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: MeasurementTextField(
+                                          labelText: "شلوار /Pants",
+                                          controller:
+                                          suitshalwarController),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: MeasurementTextField(
+                                          labelText: "پنچا /Pancha",
+                                          controller:
+                                          suitpanchaController),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Checkbox(
+                                          fillColor: MaterialStateProperty.all(
+                                              Colors.brown),
+                                          value: frontsuitpocket,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              frontsuitpocket = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text('سامنےپاکٹ/Front pocket'),
+                                        SizedBox(
+                                          width: 50,
+                                        ),
+                                        Checkbox(
+                                          fillColor: MaterialStateProperty.all(
+                                              Colors.brown),
+                                          value: sidesuitpocket,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              sidesuitpocket = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text('سائیڈ پاکٹ /Side pocket'),
+                                        SizedBox(
+                                          width: 40,
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Checkbox(
+                                          fillColor: MaterialStateProperty.all(
+                                              Colors.brown),
+                                          value: goaldaman,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              goaldaman = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text('گول دامن/ Circular hem'),
+                                        Checkbox(
+                                          fillColor: MaterialStateProperty.all(
+                                              Colors.brown),
+                                          value: chorasdaman,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              chorasdaman = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text('چوڑا دامن / Wide hem'),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -1320,37 +1356,37 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
                                   height: 5,
                                 ),
                                 SpecialInstructionContainer(
-                                    controller: addkamisnotesscontroller,
+                                    controller: suitnotescontroller,
                                     hinttext:
-                                        'Please write your special instruction here'),
+                                    'Please write your special instruction here'),
                                 SizedBox(
                                   height: 15,
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'SPECIAL INSTRUCTIONS AUDIO',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Icon(
-                                      Icons.mic,
-                                      color: Colors.brown,
-                                      size: 36,
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                CustomAudioInstruction(
-                                  iconData: Icons.play_circle_outline,
-                                  iconDataa: Icons.delete_outline,
-                                ),
+                                // Row(
+                                //   mainAxisAlignment:
+                                //       MainAxisAlignment.spaceBetween,
+                                //   children: [
+                                //     Text(
+                                //       'SPECIAL INSTRUCTIONS AUDIO',
+                                //       style: TextStyle(
+                                //           color: Colors.black,
+                                //           fontSize: 18,
+                                //           fontWeight: FontWeight.bold),
+                                //     ),
+                                //     Icon(
+                                //       Icons.mic,
+                                //       color: Colors.brown,
+                                //       size: 36,
+                                //     )
+                                //   ],
+                                // ),
+                                // SizedBox(
+                                //   height: 10,
+                                // ),
+                                // CustomAudioInstruction(
+                                //   iconData: Icons.play_circle_outline,
+                                //   iconDataa: Icons.delete_outline,
+                                // ),
                                 SizedBox(
                                   height: 15,
                                 ),
@@ -1369,17 +1405,17 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
                                 ),
                                 ClothImageContainer(
                                     child: Column(
-                                  children: [
-                                    Image.asset(
-                                      'images/cloth.jpeg',
-                                      width: double.infinity,
-                                      height:
+                                      children: [
+                                        Image.asset(
+                                          'images/cloth.jpeg',
+                                          width: double.infinity,
+                                          height:
                                           MediaQuery.of(context).size.height *
                                               .3,
-                                      fit: BoxFit.cover,
-                                    )
-                                  ],
-                                ))
+                                          fit: BoxFit.cover,
+                                        )
+                                      ],
+                                    ))
                               ],
                             ),
                           ),
@@ -1416,33 +1452,36 @@ class _UpdateCustomerScreenState extends State<UpdateCustomerScreen> {
                     await Future.delayed(Duration(milliseconds: 500));
 
                     await context.read<UpdateProvder>().updateCustomerRecord(
-                        widget.taskID,
-                        context,
-                        selectmeasurement.toString(),
-                        Namecontroller.text.trim(),
-                        phonecontroller.text.trim(),
-                        addresscontroller.text.trim(),
-                        Gender.toString(),
-                        Orderdatecontroller.text.trim(),
-                        Deliverydatecontroller.text.trim(),
-                        pamentstatus,
-                        orderstatus,
-                        selectworker,
-                        shkamizquantity.text.trim(),
-                        shkamizamount.toString(),
-                        kamizLengthController.text.trim(),
-                        sleeveLengthController.text.trim(),
-                        addkamisnotesscontroller.text.trim(),
-                        firstshirtshl,
-                        secondshirtshl,
-                        thirdshirtshl,
-                        fourthshirtshl,
-                        shortquantitycontroller.text.trim(),
-                        shortamountcontroller.text.trim(),
-                        addshortnotecontroller.text.trim(),
-                        shoulderController.text.trim(),
-                        pantamountcontroller.text.trim(),
-                        pantquantitycontroller.text.trim());
+                       taskid: widget.taskID,
+                        Name: Namecontroller.text.trim(),
+                    phone:phonecontroller.text.trim(),
+                    address: addresscontroller.text.trim(),
+                    Gender: Gender.toString(),
+
+                    OrderDate: Orderdatecontroller.text.trim(),
+                    DeliveryDate: Deliverydatecontroller.text.trim(),
+                    paymentStatus: pamentstatus,
+                    orderStatus: orderstatus,
+                    selectWorker: selectworker,
+                    selectmeasurement: selectmeasurement.toString(),
+                    suitquantity: shkamizquantity.text.trim(),
+                    suitamount: shkamizamount.text.trim(),
+                    suitlength: suitlengthController.text.trim(),
+                    suitsleeveLength: suitsleeveController.text.trim(),
+                    suitShoulder: suitshoulderController.text.trim(),
+                    suitkalar: suitkalarController.text.trim(),
+                    suitchati: suitchestController.text.trim(),
+                    suitbaghal: suitarmholeController.text.trim(),
+                    suitdaman: suitdamanController.text.trim(),
+                    suitshalwar: suitshalwarController.text.trim(),
+                    suitpancha: suitpanchaController.text.trim(),
+                    chorasdaman: chorasdaman,
+                    goaldaman: goaldaman,
+                    sidepocket: sidesuitpocket,
+                    suitnotes: suitnotescontroller.text.trim(),
+                    context: context,
+
+                    frontpocket: frontsuitpocket);
 
                     //   addCustomerRecord(
                     //           context,

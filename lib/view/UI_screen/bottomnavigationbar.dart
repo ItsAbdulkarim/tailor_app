@@ -4,9 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled4/provider/authentication_provder.dart';
 import 'package:untitled4/provider/see_customer_provder.dart';
+import 'package:untitled4/provider/themprovider.dart';
+import 'package:untitled4/provider/user_customer_img_provider.dart';
 import 'package:untitled4/view/UI_screen/TransactionScreen.dart';
 import 'package:untitled4/view/UI_screen/homescreen.dart';
 import 'package:untitled4/view/UI_screen/invoicescreen.dart';
@@ -28,8 +31,8 @@ class _AnimatedDrawerScreenState extends State<AnimatedDrawerScreen> {
       closeCurve: Curves.easeInOutCubic,
       showShadow: true,
       borderRadius: 24.0,
-      shadowLayer1Color: Colors.brown[200],
-      shadowLayer2Color: Colors.brown[300],
+      shadowLayer1Color: Colors.white54,
+      shadowLayer2Color: Colors.white60,
       menuScreen: MenuScreen(),
       mainScreen: BottomBarScreen(),
       angle: -10,
@@ -46,8 +49,6 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,45 +56,105 @@ class _MenuScreenState extends State<MenuScreen> {
         padding: const EdgeInsets.all(10),
         child: ListView(
           children: [
-            FutureBuilder<DocumentSnapshot>(
-              future: context.read<CustomerDetailPorvider>().getOneUser(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                }else if(!snapshot.hasData || snapshot.data == null){
-                  return Center(child: Text('No data available for this user.'));
+        FutureBuilder<DocumentSnapshot>(
+        future: context.read<CustomerDetailPorvider>().getOneUser(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            return Center(
+                child: Text('No data available for this user.'));
+          } else {
+            final userData = snapshot.data!.data() as Map<String, dynamic>?;
+
+            if (userData == null) {
+              return Center(child: Text('User data is null.'));
+            }
+
+            final shopName = userData['shopeName'] as String?;
+            final email = userData['email'] as String?;
+
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundImage: context
+                          .watch<UploadImgProvider>()
+                          .tailorImage !=
+                          null
+                          ? FileImage(
+                          context.read<UploadImgProvider>().tailorImage!)
+                          : null,
+                    ),
+                    Positioned(
+                        right: -10,
+                        bottom: 0,
+                        child: IconButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return Wrap(
+                                    children: [
+                                      ListTile(
+                                        leading: Icon(Icons.camera_alt),
+                                        title: Text('Take a Photo'),
+                                        onTap: () async{
+                                          await context.read<UploadImgProvider>().getUserImgSoucre(ImageSource.camera, context);
+                                          await context.read<UploadImgProvider>().upLoadImgToStorage();
 
 
-                }else{
-                  Map<String, dynamic> userData = snapshot.data!.data() as Map<String, dynamic>;
-return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.blue,
-                      ),
-                      Text('ShopName: ${userData['shopeName']}'),
-                      Text('Email: ${userData['email']}'),
-                      // Add other Text widgets for additional data
-                      // For photo, if it's a URL, you can use Image.network
-                      // Image.network(userData['photo'])
-                    ],
-                  );
+
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading: Icon(Icons.camera_alt),
+                                        title: Text('Choose a Gallery'),
+                                        onTap: () async{
+                                          await  context
+                                              .read<UploadImgProvider>()
+                                              .getUserImgSoucre(
+                                              ImageSource.gallery,
+                                              context);
+                                          await context.read<UploadImgProvider>().upLoadImgToStorage();
 
 
-                }
-              },
-            ),
-            // SizedBox(
+                                        },
+                                      )
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            icon: Icon(
+                              Icons.add_circle,
+                              color: Colors.redAccent,
+                            )))
+                  ],
+                ),
+                Text('ShopName: ${shopName ?? 'N/A'}'),
+                Text('Email: ${email ?? 'N/A'}'),
+                // Add other Text widgets for additional data
+                // For photo, if it's a URL, you can use Image.network
+                // Image.network(userData['photo'])
+              ],
+            );
+          }
+        },
+      ),
+
+      // SizedBox(
             //   height: 40,
             // ),
             // Align(
             //   alignment: Alignment.centerLeft,
-            //   child: CircleAvatar(
+            //   child: C,ircleAvatar(
             //     backgroundImage: AssetImage('images/karim.jpg'),
             //     radius: 60,
             //   ),
@@ -108,79 +169,94 @@ return Column(
             //       textAlign: TextAlign.center,
             //       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             //     )),
-            ListTile(
-              leading: Text(
-                'profile',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              trailing: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Consumer<ThemChanger>(
+                  builder: (context, themeProvider, child) {
+                    return RadioListTile<ThemeMode>(
+                      title: Text('Light Theme'),
+                      value: ThemeMode.light,
+                      groupValue: context.read<ThemChanger>().selectthemmode,
+                      onChanged: (value) => context.read<ThemChanger>().changeThemMode(value!),
+                    );
+                  },
+                ),
+                Consumer<ThemChanger>(
+                  builder: (context, themeProvider, child) {
+                    return RadioListTile<ThemeMode>(
+                      title: Text('Dark Theme'),
+                      value: ThemeMode.dark,
+                      groupValue: context.read<ThemChanger>().selectthemmode,
+                      onChanged: (value) => context.read<ThemChanger>().changeThemMode(value!),
+                    );
+                  },
+                ),
+              ],
             ),
-            ListTile(
-              leading: Text(
-                'profile',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              trailing: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              ),
-            ),
-            ListTile(
-              leading: Text(
-                'profile',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              trailing: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              ),
-            ),
-            ListTile(
-              leading: Text(
-                'profile',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              trailing: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              ),
-            ),
-            ListTile(
-              leading: Text(
-                'profile',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              trailing: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              ),
-            ),
-            ListTile(
-              leading: Text(
-                'profile',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              trailing: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              ),
-            ),
-            ListTile(
-              leading: Text(
-                'profile',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              trailing: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              ),
-            ),
+            // ListTile(
+            //   leading: Text(
+            //     'profile',
+            //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            //   ),
+            //   trailing: Icon(
+            //     Icons.arrow_back_ios,
+            //     color: Colors.black,
+            //   ),
+            // ),
+            // ListTile(
+            //   leading: Text(
+            //     'profile',
+            //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            //   ),
+            //   trailing: Icon(
+            //     Icons.arrow_back_ios,
+            //     color: Colors.black,
+            //   ),
+            // ),
+            // ListTile(
+            //   leading: Text(
+            //     'profile',
+            //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            //   ),
+            //   trailing: Icon(
+            //     Icons.arrow_back_ios,
+            //     color: Colors.black,
+            //   ),
+            // ),
+            // ListTile(
+            //   leading: Text(
+            //     'profile',
+            //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            //   ),
+            //   trailing: Icon(
+            //     Icons.arrow_back_ios,
+            //     color: Colors.black,
+            //   ),
+            // ),
+            // ListTile(
+            //   leading: Text(
+            //     'profile',
+            //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            //   ),
+            //   trailing: Icon(
+            //     Icons.arrow_back_ios,
+            //     color: Colors.black,
+            //   ),
+            // ),
+            // ListTile(
+            //   leading: Text(
+            //     'profile',
+            //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            //   ),
+            //   trailing: Icon(
+            //     Icons.arrow_back_ios,
+            //     color: Colors.black,
+            //   ),
+            // ),
             ListTile(
               leading: TextButton(
-                onPressed: () async{
+                onPressed: () async {
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -202,10 +278,9 @@ return Column(
                       );
                     },
                   );
-await Future.delayed(Duration(seconds: 5));
+                  await Future.delayed(Duration(seconds: 5));
 
-
-              await context.read<AuthenticationProvider>().signOut(context);
+                  await context.read<AuthenticationProvider>().signOut(context);
                   Navigator.pushReplacement(context, MaterialPageRoute(
                     builder: (context) {
                       return SignInScreen();
@@ -222,11 +297,8 @@ await Future.delayed(Duration(seconds: 5));
 
             ListTile(
               leading: TextButton(
-                onPressed: () async{
-
-
+                onPressed: () async {
                   //here add dialog to show are u sure to delete then if yes in yes button u place this
-
 
                   showDialog(
                     context: context,
@@ -251,8 +323,9 @@ await Future.delayed(Duration(seconds: 5));
                   );
                   await Future.delayed(Duration(seconds: 5));
 
-
-                  await context.read<AuthenticationProvider>().deleteUserAccount(context);
+                  await context
+                      .read<AuthenticationProvider>()
+                      .deleteUserAccount(context);
                   Navigator.pushReplacement(context, MaterialPageRoute(
                     builder: (context) {
                       return SignInScreen();
@@ -266,8 +339,6 @@ await Future.delayed(Duration(seconds: 5));
                 color: Colors.black,
               ),
             ),
-
-            
           ],
         ),
       ),
@@ -301,10 +372,10 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
             selected = index;
           });
         },
-        color: Colors.white,
-        elevation: 20,
-        backgroundColor: Colors.blue.shade800,
-        activeColor: Colors.white,
+        color: Colors.black,
+        elevation: 10,
+        backgroundColor: Color(0xFFFFFFFF),
+        activeColor: Color(0xFF7A7B80),
         height: 60.0,
         items: [
           TabItem(icon: Icons.home, title: 'Home'),

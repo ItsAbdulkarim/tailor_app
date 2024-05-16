@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled4/view/splishscreen/secondsplishscreen.dart';
+
+import '../UI_screen/bottomnavigationbar.dart';
+import '../authscreen/signupscreen.dart';
 
 class SplishScreen extends StatefulWidget {
   const SplishScreen({super.key});
@@ -16,9 +20,9 @@ class _SplishScreenState extends State<SplishScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 7), () {
+    Timer(Duration(seconds: 6), () {
+Get.to(FirebaseAuth.instance.currentUser !=null?AnimatedDrawerScreen(): SignUpScreen());
 
-      Get.to(SecondSplishScreen());
 
     });
   }
@@ -26,34 +30,18 @@ class _SplishScreenState extends State<SplishScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xffFDCA4D),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.35,
-                width: MediaQuery.of(context).size.width * 0.7,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('images/bok.png'),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(20)),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'TAILOR BOOK',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold),
-            )
-          ],
+backgroundColor: Color(0xFF1D1D26),
+        body: Container(
+          height:double.infinity,
+width: double.infinity,
+
+decoration: BoxDecoration(
+  image: DecorationImage(image: AssetImage('images/tailorsplishscreen.JPG'),fit: BoxFit.fill),
+
+
+),
+
+
         ));
   }
 }

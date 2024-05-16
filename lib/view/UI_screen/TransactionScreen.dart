@@ -18,9 +18,10 @@ class _TransactionScreenState extends State<TransactionScreen> {
       initialIndex: 0,
 
       child: Scaffold(
+          backgroundColor: Color(0xFFFFFFFF),
 
         appBar: AppBar(
-          backgroundColor: Colors.blue.shade800,
+          backgroundColor: Color(0xFFFFFFFF),
           centerTitle: true,
 
           bottom: TabBar(
@@ -28,8 +29,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
             indicatorSize: TabBarIndicatorSize.tab,
             labelColor: Colors.white,
             indicator: BoxDecoration(
-              color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(15),
+              color: Color(0xFF7A7B80),
+                  borderRadius: BorderRadius.circular(10),
             ),
             tabs: [
 Tab(icon: Icon(Icons.paid_outlined),text: 'paid',),
@@ -41,12 +42,12 @@ Tab(icon: Icon(Icons.paid_outlined),text: 'paid',),
             ],
           ),
           title: Text('Transaction Details',style: TextStyle(
-            color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),),
+            color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),),
           leading: IconButton(
             onPressed: () {
               ZoomDrawer.of(context)!.toggle();
             },
-            icon: Icon(Icons.menu, size: 30,color: Colors.white,),
+            icon: Icon(Icons.menu, size: 30,color: Colors.black,),
           ),
         ),
         body: TabBarView(

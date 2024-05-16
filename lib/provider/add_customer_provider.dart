@@ -1,37 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled4/provider/user_customer_img_provider.dart';
 
 class CustomerRecordProvider extends ChangeNotifier {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool isLoading= false;
 
-  Future<void> addCustomerRecord(BuildContext context,
-      String selectmeasurement,
-      String Name,
-      String phone,
-      String address,
-      String Gender,
-      String OrderDate,
-      String DeliveryDate,
-      String paymentStatus,
-      String orderStatus,
-      String selectWorker,
-      String shkamizquantity,
-      String shkamizamount,
-      String kamizLength,
-      String sleeveLength,
-      String addkamisnotess,
-      bool firstshirtshl,
-      bool secondshirtshl,
-      bool thirdshirtshl,
-      bool fourthshirtshl,
-      String shortquantity,
-      String shortamount,
-      String addshortnotes,
-      String shoulder,
-      String pantamount,
-      String pantquantity) async {
+  Future<void> addCustomerRecord({required BuildContext context,
+    required String selectmeasurement,
+   required String Name,
+   required String phone,
+   required String address,
+   required String Gender,
+   required String OrderDate,
+   required String DeliveryDate,
+   required String paymentStatus,
+   required String orderStatus,
+   required String selectWorker,
+   required String suitquantity,
+   required String suitamount,
+   required String suitlength,
+   required String suitsleeveLength,
+    required String suitShoulder,
+    required String suitkalar,
+    required String suitchati,
+    required String suitbaghal,
+    required String suitdaman,
+    required String suitshalwar,
+    required String suitpancha,
+   required String suitnotes,
+   required bool frontpocket,
+   required bool sidepocket,
+   required bool goaldaman,
+   required bool chorasdaman,
+
+    // String shortquantity,
+    // String shortamount,
+    // String addshortnotes,
+    // String shoulder,
+    // // String pantamount,
+    // String pantquantity
+
+
+  }
+
+      ) async {
     try {
       isLoading=true;
       notifyListeners();
@@ -44,11 +59,13 @@ class CustomerRecordProvider extends ChangeNotifier {
           .doc(uid)
           .collection('Customerrecord')
           .doc();
+      String? imageUrl = await context.read<UploadImgProvider>().imgurll;
+
 
       Map<String, dynamic> customerData = {
         'dt': dt,
         'taskid': taskRef.id,
-        'customerimg': '',
+        'customerimg': imageUrl,
         'name': Name.trim(),
         'phone': phone.trim(),
         'address': address.trim(),
@@ -63,28 +80,36 @@ class CustomerRecordProvider extends ChangeNotifier {
 
       if (selectedMeasurement == 'SUITS') {
         customerData.addAll({
-          'Suitquantity': shkamizquantity.trim(),
-          'suitamount': shkamizamount.trim(),
-          'kamizlength': kamizLength.trim(),
-          'asteenlength': sleeveLength.trim(),
-          'addnotes': addkamisnotess.trim(),
-          'frontpocket': firstshirtshl,
-          'onesidepocket': secondshirtshl,
-          'bothsidepocket': thirdshirtshl,
-          'gooldaman': fourthshirtshl,
+          'Suitquantity': suitquantity.trim(),
+          'suitamount': suitamount.trim(),
+          'kamizlength': suitlength.trim(),
+          'asteenlength': suitsleeveLength.trim(),
+          'suitshoulderlength':suitShoulder.trim(),
+          'suitkalar':suitkalar.trim(),
+          'suitchati':suitchati.trim(),
+          'suitbaghal':suitbaghal.trim(),
+          'suitdaman':suitdaman.trim(),
+          'suitshalwar':suitshalwar.trim(),
+          'suitshalwarpancha':suitpancha.trim(),
+          'addnotes': suitnotes.trim(),
+          'frontpocket': frontpocket,
+          'onesidepocket': sidepocket,
+          'goaldaman': goaldaman,
+          'chorasdaman': chorasdaman,
+
         });
       } else if (selectedMeasurement == 'SHIRT') {
         customerData.addAll({
-          'Shortquantity': shortquantity.trim(),
-          'shortamount': shortamount.trim(),
-          'addshortnotes': addshortnotes.trim(),
-          'shortshoulderlength': shoulder.trim(),
-          'slevelength': sleeveLength.trim(),
+          // 'Shortquantity': shortquantity.trim(),
+          // 'shortamount': shortamount.trim(),
+          // 'addshortnotes': addshortnotes.trim(),
+          // 'shortshoulderlength': shoulder.trim(),
+          // 'slevelength': suitsleeveLength.trim(),
         });
       } else if (selectedMeasurement == 'PAINTS') {
         customerData.addAll({
-          'paintamount': pantamount.trim(),
-          'paintquantity': pantquantity.trim(),
+          // 'paintamount': pantamount.trim(),
+          // 'paintquantity': pantquantity.trim(),
         });
       }
 

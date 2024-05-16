@@ -6,6 +6,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,9 @@ import 'package:untitled4/provider/add_customer_provider.dart';
 
 import 'package:untitled4/view/UI_screen/homescreen.dart';
 
+import '../../custom/fluttertoast.dart';
+import '../../provider/addworker_provider.dart';
+import '../../provider/user_customer_img_provider.dart';
 import 'bottomnavigationbar.dart';
 
 class AddCustomerScreen extends StatefulWidget {
@@ -34,75 +38,6 @@ class AddCustomerScreen extends StatefulWidget {
 }
 
 class _AddCustomerScreenState extends State<AddCustomerScreen> {
-  // void addCustomerRecord() async {
-  //   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  //
-  //   String selectedMeasurement = selectmeasurement.toString();
-  //   String uid = FirebaseAuth.instance.currentUser!.uid;
-  //   int dt = DateTime.now().millisecondsSinceEpoch;
-  //   var taskRef = firebaseFirestore
-  //       .collection('Customerrecord')
-  //       .doc(uid)
-  //       .collection('Customerrecord')
-  //       .doc();
-  //
-  //   Map<String, dynamic> customerData = {
-  //     'dt': dt,
-  //     'taskid': taskRef.id,
-  //     'customerimg': '',
-  //     'name': Namecontroller.text.trim(),
-  //     'phone': phonecontroller.text.trim(),
-  //     'address': addresscontroller.text.trim(),
-  //     'gender': Gender,
-  //     'orderdate': Orderdatecontroller.text.trim(),
-  //     'deliverydate': Deliverydatecontroller.text.trim(),
-  //     'pamentstatus': pamentstatus,
-  //     'orderstatus': orderstatus,
-  //     'selectedworker': selectworker,
-  //     'selectedmeasurement': selectedMeasurement,
-  //   };
-  //
-  //   // Add measurement-specific fields based on the selected measurement
-  //   if (selectedMeasurement == 'SUITS') {
-  //     customerData.addAll({
-  //       'Suitquantity': shkamizquantity.text.trim(),
-  //       'suitamount': shkamizamount.text.trim(),
-  //       'kamizlength': kamizLengthController.text.trim(),
-  //       'asteenlength': sleeveLengthController.text.trim(),
-  //       'addnotes': addkamisnotesscontroller.text.trim(),
-  //       'frontpocket': firstshirtshl,
-  //       'onesidepocket': secondshirtshl,
-  //       'bothsidepocket': thirdshirtshl,
-  //       "gooldaman": fourthshirtshl,
-  //     });
-  //   } else if (selectedMeasurement == 'SHIRT') {
-  //     customerData.addAll({
-  //       'Shortquantity': shortquantitycontroller.text.trim(),
-  //       'shortamount': shortamountcontroller.text.trim(),
-  //       'addshortnotes': addshortnotecontroller.text.trim(),
-  //       "shortshoulderlength": shoulderController.text.trim(),
-  //       'slevelength': sleeveLengthController.text.trim(),
-  //     });
-  //   } else if (selectedMeasurement == 'PAINTS') {
-  //     customerData.addAll({
-  //       "paintamount": pantamountcontroller.text.trim(),
-  //       'paintquantity': pantquantitycontroller.text.trim(),
-  //     });
-  //   }
-  //
-  //   // Add the data to the Firestore collection
-  //   taskRef.set(customerData);
-  //
-  //   // await firebaseFirestore
-  //   //     .collection('CustomerRecord')
-  //   //     .add(customerData)
-  //   //     .then((DocumentReference document) {
-  //   //   print('Customer record added successfully with ID: ${document.id}');
-  //   // }).catchError((error) {
-  //   //   print('Error adding customer record: $error');
-  //   // });
-  // }
-
 
 
   var Namecontroller = TextEditingController();
@@ -133,12 +68,11 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
   bool sixthshirtp = false;
 
   //for shalwarzizchekbox
-  bool firstshirtshl = false;
-  bool secondshirtshl = false;
-  bool thirdshirtshl = false;
-  bool fourthshirtshl = false;
-  bool fifthshirtshl = false;
-  bool sixthshirtshl = false;
+  bool frontsuitpocket = false;
+  bool sidesuitpocket = false;
+  bool goaldaman = false;
+  bool chorasdaman = false;
+
 
 //short controller
   TextEditingController shortquantitycontroller = TextEditingController();
@@ -174,33 +108,33 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
 
   TextEditingController shkamizquantity = TextEditingController();
   TextEditingController shkamizamount = TextEditingController();
-  TextEditingController kamizchestSizeController = TextEditingController();
-  TextEditingController kamizLengthController = TextEditingController();
-  TextEditingController kamizsleeveLengthController = TextEditingController();
-  TextEditingController kamizshoulderWidthController = TextEditingController();
+  TextEditingController suitlengthController = TextEditingController();
+  TextEditingController suitsleeveController = TextEditingController();
+  TextEditingController suitshoulderController = TextEditingController();
+  TextEditingController suitkalarController = TextEditingController();
 
-  TextEditingController shalwarwaistSizeController = TextEditingController();
-  TextEditingController shalwarhipSizeController = TextEditingController();
-  TextEditingController shalwarinseamLengthController = TextEditingController();
-  TextEditingController shalwaroutseamLengthController =
+  TextEditingController suitchestController = TextEditingController();
+  TextEditingController suitarmholeController = TextEditingController();
+  TextEditingController suitdamanController = TextEditingController();
+  TextEditingController suitshalwarController =
       TextEditingController();
-  TextEditingController shalwarthighCircumferenceController =
-      TextEditingController();
-  TextEditingController shalwarbottomOpeningController =
+  TextEditingController suitpanchaController =
       TextEditingController();
 
-  TextEditingController addkamisnotesscontroller = TextEditingController();
+
+  TextEditingController suitnotescontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFFFFFF),
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade800,
+        backgroundColor: Color(0xFFFFFFFF),
         centerTitle: true,
         title: Text(
           'Add customer',
           style: TextStyle(
-              color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+              color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
         ),
         automaticallyImplyLeading: false,
         leading: InkWell(
@@ -210,7 +144,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
           child: Icon(
             Icons.arrow_back_ios,
             size: 25,
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
       ),
@@ -219,9 +153,64 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
           padding: const EdgeInsets.all(15),
           child: Column(
             children: [
-              CircleAvatar(
-                radius: 80,
-                backgroundImage: AssetImage('images/karim.jpg'),
+              Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 80,
+                    backgroundImage: context
+                                .watch<UploadImgProvider>()
+                                .customerImage !=
+                            null
+                        ? FileImage(
+                            context.read<UploadImgProvider>().customerImage!)
+                        : null,
+                  ),
+                  Positioned(
+                      right: -5,
+                      bottom: 0,
+                      child: IconButton(
+                          onPressed: () async {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return Wrap(
+                                  children: [
+                                    ListTile(
+                                        leading: Icon(Icons.camera_alt),
+                                        title: Text('Camera'),
+                                        onTap: () async {
+                                          Navigator.pop(context);
+                                          context
+                                              .read<UploadImgProvider>()
+                                              .getCustomerImgSoucre(
+                                                ImageSource.camera,
+                                                context,
+                                              );
+                                        }),
+                                    ListTile(
+                                      leading: Icon(Icons.image),
+                                      title: Text('Gallery'),
+                                      onTap: () async {
+                                        Navigator.pop(context);
+                                        context
+                                            .read<UploadImgProvider>()
+                                            .getCustomerImgSoucre(
+                                              ImageSource.gallery,
+                                              context,
+                                            );
+                                      },
+                                    )
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          icon: Icon(
+                            Icons.add_circle,
+                            color: Colors.redAccent,
+                            size: 40,
+                          )))
+                ],
               ),
               Align(
                 alignment: Alignment.topLeft,
@@ -251,11 +240,10 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                 ],
               ),
               CustomTextField(
-                validator: (value){
-                  if(value!.isEmpty||value==null){
+                validator: (value) {
+                  if (value!.isEmpty || value == null) {
                     return 'please provide ';
-
-                  }else{
+                  } else {
                     return null;
                   }
                 },
@@ -305,11 +293,11 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                 children: [
                   Expanded(
                     child: RadioListTile(
-                      fillColor: MaterialStateProperty.all(Colors.brown),
+                      fillColor: MaterialStateProperty.all(Colors.black),
                       shape: ContinuousRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       contentPadding: EdgeInsets.zero,
-                      tileColor: Colors.brown.shade200,
+                      tileColor: Color(0xFFF1F1F1),
                       value: 'Male',
                       title: Text('Male'),
                       groupValue: Gender,
@@ -325,11 +313,11 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                   ),
                   Expanded(
                     child: RadioListTile(
-                      fillColor: MaterialStateProperty.all(Colors.brown),
+                      fillColor: MaterialStateProperty.all(Colors.black),
                       shape: ContinuousRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       contentPadding: EdgeInsets.zero,
-                      tileColor: Colors.brown.shade200,
+                      tileColor: Color(0xFFF1F1F1),
                       value: 'Female',
                       title: Text('Female'),
                       groupValue: Gender,
@@ -426,19 +414,70 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
               SizedBox(
                 height: 15,
               ),
-              CustomDropdown(
-                  value: selectworker,
-                  items: [
-                    'SELECT WORKER',
-                    'Abdul karim',
-                    'Luqman hakeem',
-                    'Suleman khan',
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      selectworker = value.toString();
-                    });
-                  }),
+
+              StreamBuilder<QuerySnapshot>(
+                stream: context.read<AddWorkerProvider>().getWorker(),
+                builder: (context, snapshot) {
+                  print('Snapshot: $snapshot');
+                  print('Data Length: ${snapshot.data?.docs.length}');
+                  List<DocumentSnapshot> workerlist = snapshot.data?.docs ?? [];
+                  if (snapshot.connectionState == ConnectionState.none) {
+                    return const Center(child: Text('No connection yet'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return SizedBox();
+                  }
+
+                  print('thissisissssssssssssss$workerlist');
+
+                  if (workerlist.isEmpty) {
+                    return Center(
+                        child: Container(
+                            height: 55,
+                            width: double.infinity,
+                            color: Color(0xFFF1F1F1),
+                            child: Center(child: Text('please add worker'))));
+                  }
+
+                  if (snapshot.hasData) {
+                    return CustomDropdown(
+                        value: selectworker,
+                        items: [
+                          'SELECT WORKER',
+                          ...workerlist
+                              .map((worker) => worker['workername'] as String)
+                              .toList(),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            selectworker = value.toString();
+                          });
+                        });
+                  }
+                  if (snapshot.hasError) {
+                    return const Center(child: Text('Something went wrong'));
+                  }
+
+                  return const Center(
+                      child: Text('Unexpected ConnectionState'));
+                },
+              ),
+
+              ///////
+
+              // CustomDropdown(
+              //     value: selectworker,
+              //     items: [
+              //       'SELECT WORKER',
+              //       'Abdul karim',
+              //       'Luqman hakeem',
+              //       'Suleman khan',
+              //     ],
+              //     onChanged: (value) {
+              //       setState(() {
+              //         selectworker = value.toString();
+              //       });
+              //     }),
               SizedBox(
                 height: 10,
               ),
@@ -556,7 +595,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     Expanded(
                                         child: Padding(
                                       padding:
-                                          const EdgeInsets.only(right: 110),
+                                          const EdgeInsets.only(right: 60),
                                       child: MeasurementTextField(
                                           labelText: '',
                                           controller: shortquantitycontroller),
@@ -579,7 +618,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     Expanded(
                                         child: Padding(
                                       padding:
-                                          const EdgeInsets.only(right: 110),
+                                          const EdgeInsets.only(right: 60),
                                       child: MeasurementTextField(
                                           labelText: '',
                                           controller: shortamountcontroller),
@@ -646,6 +685,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   height: 10,
                                 ),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
@@ -658,9 +698,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('first'),
-                                    SizedBox(
-                                      width: 50,
-                                    ),
+
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -672,9 +710,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('second'),
-                                    SizedBox(
-                                      width: 40,
-                                    ),
+
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -692,6 +728,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   height: 10,
                                 ),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
@@ -704,9 +741,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('forth'),
-                                    SizedBox(
-                                      width: 45,
-                                    ),
+
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -718,9 +753,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('fifth'),
-                                    SizedBox(
-                                      width: 62,
-                                    ),
+
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -832,7 +865,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     Expanded(
                                         child: Padding(
                                       padding:
-                                          const EdgeInsets.only(right: 110),
+                                          const EdgeInsets.only(right: 60),
                                       child: MeasurementTextField(
                                           labelText: '',
                                           controller: pantquantitycontroller),
@@ -855,7 +888,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     Expanded(
                                         child: Padding(
                                       padding:
-                                          const EdgeInsets.only(right: 110),
+                                          const EdgeInsets.only(right: 60),
                                       child: MeasurementTextField(
                                           labelText: '',
                                           controller: pantamountcontroller),
@@ -953,6 +986,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   height: 10,
                                 ),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
@@ -965,9 +999,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('first'),
-                                    SizedBox(
-                                      width: 50,
-                                    ),
+
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -979,9 +1011,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('second'),
-                                    SizedBox(
-                                      width: 40,
-                                    ),
+
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -999,6 +1029,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   height: 10,
                                 ),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
@@ -1011,9 +1042,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('forth'),
-                                    SizedBox(
-                                      width: 45,
-                                    ),
+
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -1025,9 +1054,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('fifth'),
-                                    SizedBox(
-                                      width: 62,
-                                    ),
+                                   
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -1139,7 +1166,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     Expanded(
                                         child: Padding(
                                       padding:
-                                          const EdgeInsets.only(right: 110),
+                                          const EdgeInsets.only(right: 60),
                                       child: MeasurementTextField(
                                           labelText: '',
                                           controller: shkamizquantity),
@@ -1162,7 +1189,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     Expanded(
                                         child: Padding(
                                       padding:
-                                          const EdgeInsets.only(right: 110),
+                                          const EdgeInsets.only(right: 60),
                                       child: MeasurementTextField(
                                           labelText: '',
                                           controller: shkamizamount),
@@ -1176,134 +1203,153 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   children: [
                                     Expanded(
                                       child: MeasurementTextField(
-                                          labelText: "kamis Length",
-                                          controller: kamizLengthController),
+                                          labelText: "لمبائی /Length",
+                                          controller: suitlengthController),
                                     ),
                                     SizedBox(
                                       width: 10,
                                     ),
                                     Expanded(
                                       child: MeasurementTextField(
-                                          labelText: "Sleeve",
+                                          labelText: "آستین /Sleeve",
                                           controller:
-                                              kamizsleeveLengthController),
+                                              suitsleeveController),
                                     ),
                                     SizedBox(
                                       width: 10,
                                     ),
                                     Expanded(
                                       child: MeasurementTextField(
-                                          labelText: "SHOULDER",
+                                          labelText: "تیرا /Shoulder",
                                           controller:
-                                              kamizshoulderWidthController),
+                                              suitshoulderController),
                                     ),
                                   ],
                                 ),
-                                // SizedBox(
-                                //   height: 10,
-                                // ),
-                                // Row(
-                                //   children: [
-                                //     Expanded(
-                                //       child: MeasurementTextField(
-                                //           labelText: "CHEST",
-                                //           controller: kamizchestSizeController),
-                                //     ),
-                                //     SizedBox(
-                                //       width: 10,
-                                //     ),
-                                //     Expanded(
-                                //       child: MeasurementTextField(
-                                //           labelText: "Waist Size",
-                                //           controller:
-                                //               shalwarwaistSizeController),
-                                //     ),
-                                //     SizedBox(
-                                //       width: 10,
-                                //     ),
-                                //     Expanded(
-                                //       child: MeasurementTextField(
-                                //           labelText: "Hip Size",
-                                //           controller: shalwarhipSizeController),
-                                //     ),
-                                //   ],
-                                // ),
-                                // SizedBox(
-                                //   height: 10,
-                                // ),
-                                // Row(
-                                //   children: [
-                                //     Expanded(
-                                //       child: MeasurementTextField(
-                                //           labelText: "Inseam Length (Shalwar)",
-                                //           controller:
-                                //               shalwarinseamLengthController),
-                                //     ),
-                                //     SizedBox(
-                                //       width: 10,
-                                //     ),
-                                //     Expanded(
-                                //       child: MeasurementTextField(
-                                //           labelText:
-                                //               "Outseam Length (Shalwar):",
-                                //           controller:
-                                //               shalwaroutseamLengthController),
-                                //     ),
-                                //     SizedBox(
-                                //       width: 10,
-                                //     ),
-                                //     Expanded(
-                                //       child: MeasurementTextField(
-                                //           labelText: "Bottom Opening (Shalwar)",
-                                //           controller:
-                                //               shalwarbottomOpeningController),
-                                //     ),
-                                //   ],
-                                // ),
-                                // SizedBox(
-                                //   height: 10,
-                                // ),
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 Row(
                                   children: [
-                                    Checkbox(
-                                      fillColor: MaterialStateProperty.all(
-                                          Colors.brown),
-                                      value: firstshirtshl,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          firstshirtshl = value!;
-                                        });
-                                      },
+                                    Expanded(
+                                      child: MeasurementTextField(
+                                          labelText: "کلار /Kalar",
+                                          controller: suitkalarController),
                                     ),
-                                    Text('first'),
                                     SizedBox(
-                                      width: 50,
+                                      width: 10,
                                     ),
-                                    Checkbox(
-                                      fillColor: MaterialStateProperty.all(
-                                          Colors.brown),
-                                      value: secondshirtshl,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          secondshirtshl = value!;
-                                        });
-                                      },
+                                    Expanded(
+                                      child: MeasurementTextField(
+                                          labelText: "چھاتی /Chest",
+                                          controller:
+                                              suitchestController),
                                     ),
-                                    Text('second'),
                                     SizedBox(
-                                      width: 40,
+                                      width: 10,
                                     ),
-                                    Checkbox(
-                                      fillColor: MaterialStateProperty.all(
-                                          Colors.brown),
-                                      value: thirdshirtshl,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          thirdshirtshl = value!;
-                                        });
-                                      },
+                                    Expanded(
+                                      child: MeasurementTextField(
+                                          labelText: "بغل /Armhole",
+                                          controller: suitarmholeController),
                                     ),
-                                    Text('third'),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: MeasurementTextField(
+                                          labelText: "دامن /Daaman",
+                                          controller:
+                                              suitdamanController),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: MeasurementTextField(
+                                          labelText: "شلوار /Pants",
+                                          controller:
+                                              suitshalwarController),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: MeasurementTextField(
+                                          labelText: "پنچا /Pancha",
+                                          controller:
+                                              suitpanchaController),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Checkbox(
+                                          fillColor: MaterialStateProperty.all(
+                                              Colors.brown),
+                                          value: frontsuitpocket,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              frontsuitpocket = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text('سامنےپاکٹ/Front pocket'),
+                                        SizedBox(
+                                          width: 50,
+                                        ),
+                                        Checkbox(
+                                          fillColor: MaterialStateProperty.all(
+                                              Colors.brown),
+                                          value: sidesuitpocket,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              sidesuitpocket = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text('سائیڈ پاکٹ /Side pocket'),
+                                        SizedBox(
+                                          width: 40,
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Checkbox(
+                                          fillColor: MaterialStateProperty.all(
+                                              Colors.brown),
+                                          value: goaldaman,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              goaldaman = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text('گول دامن/ Circular hem'),
+                                        Checkbox(
+                                          fillColor: MaterialStateProperty.all(
+                                              Colors.brown),
+                                          value: chorasdaman,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              chorasdaman = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text('چوڑا دامن / Wide hem'),
+                                      ],
+                                    )
                                   ],
                                 ),
                                 SizedBox(
@@ -1369,37 +1415,37 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   height: 5,
                                 ),
                                 SpecialInstructionContainer(
-                                    controller: addkamisnotesscontroller,
+                                    controller: suitnotescontroller,
                                     hinttext:
                                         'Please write your special instruction here'),
                                 SizedBox(
                                   height: 15,
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'SPECIAL INSTRUCTIONS AUDIO',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Icon(
-                                      Icons.mic,
-                                      color: Colors.brown,
-                                      size: 36,
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                CustomAudioInstruction(
-                                  iconData: Icons.play_circle_outline,
-                                  iconDataa: Icons.delete_outline,
-                                ),
+                                // Row(
+                                //   mainAxisAlignment:
+                                //       MainAxisAlignment.spaceBetween,
+                                //   children: [
+                                //     Text(
+                                //       'SPECIAL INSTRUCTIONS AUDIO',
+                                //       style: TextStyle(
+                                //           color: Colors.black,
+                                //           fontSize: 18,
+                                //           fontWeight: FontWeight.bold),
+                                //     ),
+                                //     Icon(
+                                //       Icons.mic,
+                                //       color: Colors.brown,
+                                //       size: 36,
+                                //     )
+                                //   ],
+                                // ),
+                                // SizedBox(
+                                //   height: 10,
+                                // ),
+                                // CustomAudioInstruction(
+                                //   iconData: Icons.play_circle_outline,
+                                //   iconDataa: Icons.delete_outline,
+                                // ),
                                 SizedBox(
                                   height: 15,
                                 ),
@@ -1438,9 +1484,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                 height: 20,
               ),
               CustomButton(
-                  onPressed: () async{
+                  onPressed: () async {
                     //convert all to text.trim if possible
-
 
                     showDialog(
                       context: context,
@@ -1451,7 +1496,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               SpinKitDualRing(
-                                color: Colors.blue,
+                                color: Color(0xFF7A7B80),
                                 size: 70,
                               ),
                               SizedBox(
@@ -1464,32 +1509,51 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                       },
                     );
 
+                    await context
+                        .read<UploadImgProvider>()
+                        .uploadCustomerImage(phonecontroller.text.trim());
+
+                    await context
+                        .read<CustomerRecordProvider>()
+                        .addCustomerRecord(
+
+                      Name: Namecontroller.text.trim(),
+                      phone:phonecontroller.text.trim(),
+                      address: addresscontroller.text.trim(),
+                      Gender: Gender.toString(),
+
+                      OrderDate: Orderdatecontroller.text.trim(),
+                      DeliveryDate: Deliverydatecontroller.text.trim(),
+                      paymentStatus: pamentstatus,
+                      orderStatus: orderstatus,
+                      selectWorker: selectworker,
+                      selectmeasurement: selectmeasurement.toString(),
+                      suitquantity: shkamizquantity.text.trim(),
+                      suitamount: shkamizamount.text.trim(),
+                      suitlength: suitlengthController.text.trim(),
+                      suitsleeveLength: suitsleeveController.text.trim(),
+suitShoulder: suitshoulderController.text.trim(),
+suitkalar: suitkalarController.text.trim(),
+suitchati: suitchestController.text.trim(),
+suitbaghal: suitarmholeController.text.trim(),
+suitdaman: suitdamanController.text.trim(),
+suitshalwar: suitshalwarController.text.trim(),
+suitpancha: suitpanchaController.text.trim(),
+chorasdaman: chorasdaman,
+                      goaldaman: goaldaman,
+                      sidepocket: sidesuitpocket,
+                      suitnotes: suitnotescontroller.text.trim(),
+                      context: context,
+
+                      frontpocket: frontsuitpocket,
 
 
 
+                           );
 
-
-                  await context.read<CustomerRecordProvider>().addCustomerRecord(context,
-                       selectmeasurement.toString(),
-                       Namecontroller.text.trim(),
-                       phonecontroller.text.trim()
-                       ,
-                       addresscontroller.text.trim(),
-                       Gender.toString(),
-                       Orderdatecontroller.text.trim(),
-                       Deliverydatecontroller.text.trim(),
-                       pamentstatus, orderstatus, selectworker,
-                       shkamizquantity.text.trim(), shkamizamount.toString(),
-                       kamizLengthController.text.trim(),sleeveLengthController.text.trim(),
-                       addkamisnotesscontroller.text.trim(),
-                       firstshirtshl, secondshirtshl,
-                       thirdshirtshl, fourthshirtshl, shortquantitycontroller.text.trim(),
-                       shortamountcontroller.text.trim(), addshortnotecontroller.text.trim(),
-                       shoulderController.text.trim(), pantamountcontroller.text.trim(),
-                       pantquantitycontroller.text.trim());
-
+                    ///
                   },
-                  color: Colors.brown,
+                  color: Color(0xFF7A7B80),
                   text: 'Register')
             ],
           ),

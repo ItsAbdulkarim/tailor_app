@@ -19,13 +19,13 @@ class CustomRadioListTile extends StatelessWidget {
     return RadioListTile(
       value: value,
       title: Text(title),
-      fillColor: MaterialStateProperty.all(Colors.brown),
+      fillColor: MaterialStateProperty.all(Colors.black),
       contentPadding: EdgeInsets.zero,
       shape: ContinuousRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
       dense: true,
-      tileColor: Colors.brown.shade200,
+      tileColor: Color(0xFFF1F1F1),
       groupValue: groupValue,
       onChanged: onChanged
     );

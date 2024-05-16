@@ -20,6 +20,7 @@ class AuthenticationProvider extends ChangeNotifier {
 
       User? user = userCredential.user;
       if (user != null) {
+
         firestore.collection('Tailor').doc(user.uid).set({
           'shopeName': name,
           'email': email,
@@ -28,7 +29,7 @@ class AuthenticationProvider extends ChangeNotifier {
           'createddate': DateTime.now().millisecondsSinceEpoch,
         });
 
-        showToast('User register Successfully ${user.uid}');
+        showToast('User registered successfully. Verification email sent to $email');
         isUserRegistersuccessfully = true;
       }
     } on FirebaseAuthException catch (e) {
@@ -56,9 +57,17 @@ class AuthenticationProvider extends ChangeNotifier {
 
       User? user = firebaseAuth.currentUser;
       if (user != null) {
+
         showToast('User login Successful ${user.uid}');
         isUserRegistersuccessfully = true;
         // Perform any additional actions after successful login, if needed.
+
+
+        // Send verification email if the user's email is not verified
+        if (!user.emailVerified) {
+          await user.sendEmailVerification();
+          showToast('Verification email sent to ${user.email}');
+        }
       }
     } on FirebaseException catch (e) {
       isUserRegistersuccessfully = false;
@@ -113,31 +122,20 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
   //delete account
-  Future<void> deleteUserAccount(BuildContext context)async{
-    try{
-
+  Future<void> deleteUserAccount(BuildContext context) async {
+    try {
       isLoading = true;
       notifyListeners();
       await FirebaseAuth.instance.currentUser!.delete();
       showToast('User Successfully logout');
-
-    }on FirebaseException catch(e){
-
+    } on FirebaseException catch (e) {
       showToast(e.message.toString());
-    }finally{
-
-      isLoading=false;
+    } finally {
+      isLoading = false;
       notifyListeners();
       Navigator.pop(context);
-
     }
 
-
     //delete account
-
-
   }
-
-
-
 }

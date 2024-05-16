@@ -20,13 +20,14 @@ class CustomContainer extends StatelessWidget {
       onTap: ontap,
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            Colors.blue.shade800,
-            Colors.purple.shade700,
-            Colors.red.shade600,
-            Colors.deepOrange.shade500,
-
-          ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+          color: Color(0xFFF1F1F1),
+          // gradient: LinearGradient(colors: [
+          //   Colors.blue.shade800,
+          //   Colors.purple.shade700,
+          //   Colors.red.shade600,
+          //   Colors.deepOrange.shade500,
+          //
+          // ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
           borderRadius: BorderRadius.circular(35),
         ),
         child: Padding(
@@ -38,7 +39,7 @@ class CustomContainer extends StatelessWidget {
                 img,
                 height: 60,
                 width: 50,
-                color: Colors.white,
+                color: Colors.black,
               ),
               SizedBox(height: 10.0),
               Text(
@@ -46,11 +47,11 @@ class CustomContainer extends StatelessWidget {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 17.0,
-                    color: Colors.white),
+                    color: Colors.black),
               ),
               Text(
                 subtitle,
-                style: TextStyle(fontSize: 15.0, color: Colors.white),
+                style: TextStyle(fontSize: 15.0, color: Color(0xFF707070)),
               ),
             ],
           ),

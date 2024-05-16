@@ -11,16 +11,17 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color( 0xFFFFFFFF),
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade800,
+          backgroundColor: Color( 0xFFFFFFFF),
         centerTitle: true
         ,title: Text('Invocescreen',style: TextStyle(
-          color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),),
+          color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),),
         leading: IconButton(
           onPressed: () {
             ZoomDrawer.of(context)!.toggle();
           },
-          icon: Icon(Icons.menu,size: 30,color: Colors.white,),
+          icon: Icon(Icons.menu,size: 30,color: Colors.black,),
         ),
       ),
 

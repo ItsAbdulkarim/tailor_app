@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:untitled4/custom/custombutton.dart';
 import 'package:untitled4/provider/authentication_provder.dart';
 import 'package:untitled4/view/UI_screen/bottomnavigationbar.dart';
+import 'package:untitled4/view/authscreen/email_verification_screen.dart';
 import 'package:untitled4/view/authscreen/forgotpassword.dart';
 import 'package:untitled4/view/authscreen/signupscreen.dart';
 
@@ -66,8 +67,20 @@ class _SignInScreenState extends State<SignInScreen> {
 
           passwordcontroller.text.trim());
       if (context.read<AuthenticationProvider>().isUserRegistersuccessfully) {
-        Get.offAll(AnimatedDrawerScreen());
-        print('Registration successful');
+
+
+        // Check if user's email is verified
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user != null && user.emailVerified) {
+          // Navigate to home screen if email is verified
+          Get.offAll(AnimatedDrawerScreen());
+        } else {
+          // If email is not verified, navigate to the verification screen
+          Get.offAll(EmailVerificationScreen());
+        }
+        print('Login successful');
+
+
       }
       emailcontroller.clear();
       passwordcontroller.clear();
@@ -179,7 +192,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       Text('Remember me'),
                       SizedBox(
-                        width: 70,
+                        width: 30,
                       ),
                       TextButton(
                           onPressed: () {

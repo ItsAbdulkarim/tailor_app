@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "528661148026",
-    "project_id": "tailorease-a4c58",
-    "storage_bucket": "tailorease-a4c58.appspot.com"
+    "project_number": "325343300557",
+    "project_id": "tailoreaseapp",
+    "storage_bucket": "tailoreaseapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:528661148026:android:41eb37f4d3c310b75366c3",
+        "mobilesdk_app_id": "1:325343300557:android:32a7168b659c8693ff9284",
         "android_client_info": {
           "package_name": "com.example.untitled4"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDTA25Nv7MQG0D7ZkZYn2lARK5YUd9w0N8"
+          "current_key": "AIzaSyDFA-Li7937gU1AbEVwGpru5oWznrMnmdU"
         }
       ],
       "services": {

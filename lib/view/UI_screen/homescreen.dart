@@ -16,20 +16,23 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade200,
-
+      backgroundColor: Color(0xFFFFFFFF),
       appBar: AppBar(
-
-        backgroundColor:Colors.blue.shade800,
         centerTitle: true,
-        title: Text('Homescreen',style: TextStyle(
-
-            color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),),
+        title: Text(
+          'Homescreen',
+          style: TextStyle(
+              color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
+        ),
         leading: IconButton(
           onPressed: () {
             ZoomDrawer.of(context)?.toggle();
           },
-          icon: Icon(Icons.menu, size: 30,color: Colors.white,),
+          icon: Icon(
+            Icons.menu,
+            size: 30,
+            color: Colors.black,
+          ),
         ),
       ),
       body: Padding(
@@ -64,25 +67,25 @@ class HomeScreen extends StatelessWidget {
                 title: 'View Customer',
                 subtitle: 'See details'),
             CustomContainer(
-              ontap: (){
-
-                Get.to(SeeCustomerDetailUpdateScreen());
-              },
+                ontap: () {
+                  Get.to(SeeCustomerDetailUpdateScreen());
+                },
                 img: 'images/todayorder.png',
                 title: 'Update Orders',
                 subtitle: 'See details'),
+            // CustomContainer(
+            //     img: 'images/totalorder.png',
+            //     title: 'Total Orders',
+            //     subtitle: 'See details'),
+            // CustomContainer(
+            //     img: 'images/assignwork.png',
+            //     title: 'Assign Order',
+            //     subtitle: 'See details'),
+
             CustomContainer(
-                img: 'images/totalorder.png',
-                title: 'Total Orders',
-                subtitle: 'See details'),
-            CustomContainer(
-                img: 'images/assignwork.png',
-                title: 'Assign Order',
-                subtitle: 'See details'),
-            CustomContainer(
-              ontap: (){
-                Get.to(WorkerListScreen());
-              },
+                ontap: () {
+                  Get.to(WorkerListScreen());
+                },
                 img: 'images/shortlist.png',
                 title: 'Worker List',
                 subtitle: 'See details'),

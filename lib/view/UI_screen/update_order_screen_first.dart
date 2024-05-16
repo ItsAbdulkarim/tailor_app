@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled4/provider/see_customer_provder.dart';
 import 'package:untitled4/view/UI_screen/update_screen.dart';
@@ -35,13 +36,15 @@ class _SeeCustomerDetailUpdateScreenState extends State<SeeCustomerDetailUpdateS
 
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Color(0xFFFFFFFF),
         appBar: AppBar(
-          backgroundColor: Colors.blue.shade800,
+          backgroundColor: Color(0xFFFFFFFF),
+
           centerTitle: true,
           title: Text(
             'see detail',
             style: TextStyle(
-                color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+                color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
           ),
           leading: InkWell(
             onTap: () {
@@ -50,7 +53,7 @@ class _SeeCustomerDetailUpdateScreenState extends State<SeeCustomerDetailUpdateS
             child: Icon(
               Icons.arrow_back_ios,
               size: 25,
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
         ),
@@ -77,20 +80,23 @@ class _SeeCustomerDetailUpdateScreenState extends State<SeeCustomerDetailUpdateS
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Container(
-                      height: 110,
-                      child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Container(
+                        height: 100,
+                        decoration: BoxDecoration(
+                            color: Color(0xFFF1F1F1),
+                            borderRadius: BorderRadius.circular(20)
 
-                        color: Colors.blueGrey.shade300,
-                        margin: EdgeInsets.symmetric(vertical: 8),
-                        elevation: 7,
+                        ),
                         child: Row(
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
                                   left: 8, top: 5, bottom: 5),
                               child: CircleAvatar(
-                                backgroundColor: Colors.redAccent,
+                                backgroundImage: tasklist[index]['customerimg'] !=null?NetworkImage(tasklist[index]['customerimg']):NetworkImage('https://tse1.mm.bing.net/th?id=OIP.zyj0FFO-lfhm8uzozYdpbgHaHa&pid=Api&P=0&h=220'),
+
                                 radius: 40,
                               ),
                             ),
@@ -106,7 +112,11 @@ class _SeeCustomerDetailUpdateScreenState extends State<SeeCustomerDetailUpdateS
                                   children: [
                                     Text(tasklist[index]['name']),
                                     Text(tasklist[index]['phone']),
-                                    Text(tasklist[index]['dt'].toString())
+                                    Text(
+                                      '${DateFormat('d MMMM y H:mm').format(DateTime.fromMillisecondsSinceEpoch(tasklist[index]['dt'] as int))}',
+
+                                    )
+
                                   ],
                                 ),
                                 trailing: IconButton(onPressed: (){

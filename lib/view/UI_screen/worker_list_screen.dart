@@ -1,13 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:untitled4/custom/custom_searchbar.dart';
 import 'package:untitled4/custom/custombutton.dart';
 import 'package:untitled4/custom/customtextformfield.dart';
+import 'package:untitled4/provider/addworker_provider.dart';
+import 'package:untitled4/view/UI_screen/update_worker_screen.dart';
 
+import '../../provider/deleteprovder.dart';
 import 'bottomnavigationbar.dart';
 
 class WorkerListScreen extends StatefulWidget {
-  const WorkerListScreen({super.key});
+
+  const WorkerListScreen({super.key,});
 
   @override
   State<WorkerListScreen> createState() => _WorkerListScreenState();
@@ -20,19 +27,17 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
   TextEditingController specialitycontroller = TextEditingController();
   TextEditingController pricecontroller = TextEditingController();
 
-  //this is search controller
-  TextEditingController orderlistsearchcontroler = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade100,
+      backgroundColor: Color(0xFFFFFFFF),
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade800,
+        backgroundColor: Color(0xFFFFFFFF),
         title: const Text(
           'Worker list',
           style: TextStyle(
-              color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+              color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: InkWell(
@@ -42,7 +47,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
           child: Icon(
             Icons.arrow_back_ios,
             size: 25,
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
         actions: [
@@ -92,31 +97,43 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                               ),
                               CustomTextField(
                                 controller: workernumbercontroller,
-                                hint: 'Enter worker name',
+                                hint: 'phone number',
                               ),
                               SizedBox(
                                 height: 10,
                               ),
                               CustomTextField(
                                 controller: specialitycontroller,
-                                hint: 'Enter worker name',
+                                hint: 'speciality',
                               ),
                               SizedBox(
                                 height: 10,
                               ),
                               CustomTextField(
                                 controller: pricecontroller,
-                                hint: 'Enter worker name',
+                                hint: 'price',
                               ),
                               SizedBox(
                                 height: 10,
                               ),
                               CustomButton(
-                                onPressed: () {
+                                onPressed: () async {
+                                  await context
+                                      .read<AddWorkerProvider>()
+                                      .AddWorkerMethod(
+                                          namecontroller.text.trim(),
+                                          workernumbercontroller.text.trim(),
+                                          specialitycontroller.text.trim(),
+                                          pricecontroller.text.trim());
+                                  namecontroller.clear();
+                                  workernumbercontroller.clear();
+                                  specialitycontroller.clear();
+                                  pricecontroller.clear();
+
                                   Navigator.of(context).pop();
                                 },
                                 text: "Submit",
-                                color: Colors.brown,
+                                color: Color(0xFF7A7B80),
                               )
                             ],
                           ),
@@ -128,7 +145,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                 icon: Icon(
                   Icons.add_circle_outline,
                 ),
-                color: Colors.white,
+                color: Colors.black,
                 iconSize: 30),
           ),
           Padding(
@@ -136,7 +153,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
             child: Text(
               'Add worker',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 15,
               ),
             ),
@@ -148,442 +165,169 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              CustomSearchBar(
-                  controller: orderlistsearchcontroler, onSearch: () {}),
               SizedBox(
                 height: 10,
               ),
+              StreamBuilder<QuerySnapshot>(
+                stream: context.read<AddWorkerProvider>().getWorker(),
+                builder: (context, snapshot) {
+                  print('Snapshot: $snapshot');
+                  print('Data Length: ${snapshot.data?.docs.length}');
+                  List<DocumentSnapshot> workerlist = snapshot.data?.docs ?? [];
+                  if (snapshot.connectionState == ConnectionState.none) {
+                    return const Center(child: Text('No connection yet'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                        child: SpinKitDualRing(color: Colors.purple));
+                  }
 
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: 90,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 7,
-                    child: Container(
-                      height: 90,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [
-                              Colors.blue.shade800,
-                              Colors.purple.shade700,
-                              Colors.red.shade600,
-                              Colors.deepOrange.shade500,
-                            ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 3),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Kairm',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                                Text(
-                                  'speciallity',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white),
-                                ),
-                                Text(
-                                  'price',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.white),
-                                ),
-                              ],
+                  print('thissisissssssssssssss$workerlist');
+
+                  if (workerlist.isEmpty) {
+                    return const Center(child: Text('No Tasks Saved Yet'));
+                  }
+
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: workerlist.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Container(
+                            height: 100,
+                              decoration: BoxDecoration(
+                              color: Color(0xFFF1F1F1),
+                          borderRadius: BorderRadius.circular(20),
+
+
                             ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 3),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        workerlist[index]['workername'],
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                      ),
+                                      Text(
+                                        workerlist[index]['specialty'],
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black),
+                                      ),
+                                      Text(
+                                        workerlist[index]['price'],
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
 
-                            // this row is used for edth the worker list and delete the worker both button with dialoge
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: TextButton(
-                                        onPressed: () {
-                                          setState(() {});
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return Dialog(
-                                                insetPadding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 30,
-                                                        horizontal: 10),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(10),
-                                                  child: Column(
-                                                    children: [
-                                                      Text(
-                                                        'Add Worker',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 25,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      Align(
-                                                          alignment: Alignment
-                                                              .topRight,
-                                                          child: InkWell(
-                                                            onTap: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                            },
-                                                            child: Icon(
-                                                              Icons.close,
-                                                              size: 35,
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          )),
-                                                      SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      CustomTextField(
-                                                        controller:
-                                                            namecontroller,
-                                                        hint:
-                                                            'Enter worker name',
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      CustomTextField(
-                                                        controller:
-                                                            workernumbercontroller,
-                                                        hint:
-                                                            'Enter worker name',
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      CustomTextField(
-                                                        controller:
-                                                            specialitycontroller,
-                                                        hint:
-                                                            'Enter worker name',
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      CustomTextField(
-                                                        controller:
-                                                            pricecontroller,
-                                                        hint:
-                                                            'Enter worker name',
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      CustomButton(
+                                  // this row is used for edth the worker list and delete the worker both button with dialoge
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: TextButton(
+
+                                              onPressed: () {
+                                                String taskID = workerlist[index].id;
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                              return UpdateWorkerScreen(taskSnapshot: workerlist[index],taskID:taskID ,);
+                                            },));
+
+                                              },
+                                              child: Text(
+                                                'Edit worker',
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ))),
+
+                                      //this is delete butoon with dialog
+                                      Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: TextButton(
+                                              onPressed: () {
+
+
+
+                                                showDialog(context: context, builder: (context) {
+                                                  return AlertDialog(
+
+
+                                                    title: Text('Are you sure to delete'),
+                                                    actions: [
+                                                      TextButton(
                                                         onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
+                                                          Navigator.pop(context); // Close the dialog
                                                         },
-                                                        text: "Submit",
-                                                        color: Colors.brown,
-                                                      )
+                                                        child: Text('Cancel'),
+                                                      ),
+                                                      TextButton(
+                                                          onPressed: () async {
+                                                            Navigator.pop(context);
+                                                            String taskID =
+                                                                workerlist[index].id;
+                                                            await context
+                                                                .read<
+                                                                DeleteRecordProvider>()
+                                                                .deleteWorker(taskID);
+
+
+                                                          },
+                                                          child: Text('Delete'))
+
                                                     ],
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                        child: Text(
-                                          'Edit worker',
-                                          style: TextStyle(color: Colors.white),
-                                        ))),
+                                                  );
+                                                },);
 
-                                //this is delete butoon with dialog
-                                Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: TextButton(
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: Text(
-                                                  'Conform Delete',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 25,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                content: Text(
-                                                  'Are you sure you want to delete',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(
-                                                          context); // Close the dialog
-                                                    },
-                                                    child: Text(
-                                                      'Cancel',
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                  // Confirm Button
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      // Add your delete logic here
 
-                                                      Navigator.pop(
-                                                          context); // Close the dialog
-                                                    },
-                                                    child: Text(
-                                                      'OK',
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                        child: Text(
-                                          'delete worker',
-                                          style: TextStyle(color: Colors.white),
-                                        ))),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+
+
+                                              },
+                                              child: Text(
+                                                'delete worker',
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ))),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return const Center(child: Text('Something went wrong'));
+                  }
+
+                  return const Center(
+                      child: Text('Unexpected ConnectionState'));
                 },
               )
 
-              // Container(
-              //   height:90,
-              //   width: double.infinity,
-              //   decoration: BoxDecoration(
-              //     color: Colors.red,
-              //     borderRadius: BorderRadius.circular(15),
-              //   ),
-              //   child: Padding(
-              //     padding: const EdgeInsets.symmetric(horizontal: 10,
-              //         vertical: 3),
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              //         Column(
-              //           mainAxisAlignment: MainAxisAlignment.start,
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           children: [
-              //             Text(
-              //               'Kairm',
-              //               style: TextStyle(
-              //                   fontSize: 20,
-              //                   fontWeight: FontWeight.bold,
-              //                   color: Colors.black),
-              //             ),
-              //             Text(
-              //               'speciallity',
-              //               style: TextStyle(
-              //                   fontSize: 18,
-              //                   fontWeight: FontWeight.w500,
-              //                   color: Colors.black),
-              //             ),
-              //             Text(
-              //               'price',
-              //               style: TextStyle(
-              //                   fontSize: 20,
-              //                   fontWeight: FontWeight.w300,
-              //                   color: Colors.black),
-              //             ),
-              //           ],
-              //         ),
-              //
-              //         // this row is used for edth the worker list and delete the worker both button with dialoge
-              //         Row(
-              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //           children: [
-              //             Align(
-              //                 alignment: Alignment.bottomCenter,
-              //                 child: TextButton(
-              //                     onPressed: () {
-              //                       setState(() {});
-              //                       showDialog(
-              //                         context: context,
-              //                         builder: (context) {
-              //                           return Dialog(
-              //                             insetPadding: EdgeInsets.symmetric(
-              //                                 vertical: 30, horizontal: 10),
-              //                             child: Padding(
-              //                               padding: const EdgeInsets.all(10),
-              //                               child: Column(
-              //                                 children: [
-              //                                   Text(
-              //                                     'Add Worker',
-              //                                     style: TextStyle(
-              //                                         color: Colors.black,
-              //                                         fontSize: 25,
-              //                                         fontWeight: FontWeight.bold),
-              //                                   ),
-              //                                   Align(
-              //                                       alignment: Alignment.topRight,
-              //                                       child: InkWell(
-              //                                         onTap: () {
-              //                                           Navigator.of(context).pop();
-              //                                         },
-              //                                         child: Icon(
-              //                                           Icons.close,
-              //                                           size: 35,
-              //                                           color: Colors.black,
-              //                                         ),
-              //                                       )),
-              //                                   SizedBox(
-              //                                     height: 5,
-              //                                   ),
-              //                                   CustomTextField(
-              //                                     controller: namecontroller,
-              //                                     hint: 'Enter worker name',
-              //                                   ),
-              //                                   SizedBox(
-              //                                     height: 10,
-              //                                   ),
-              //                                   CustomTextField(
-              //                                     controller: workernumbercontroller,
-              //                                     hint: 'Enter worker name',
-              //                                   ),
-              //                                   SizedBox(
-              //                                     height: 10,
-              //                                   ),
-              //                                   CustomTextField(
-              //                                     controller: specialitycontroller,
-              //                                     hint: 'Enter worker name',
-              //                                   ),
-              //                                   SizedBox(
-              //                                     height: 10,
-              //                                   ),
-              //                                   CustomTextField(
-              //                                     controller: pricecontroller,
-              //                                     hint: 'Enter worker name',
-              //                                   ),
-              //                                   SizedBox(
-              //                                     height: 10,
-              //                                   ),
-              //                                   CustomButton(
-              //                                     onPressed: () {
-              //                                       Navigator.of(context).pop();
-              //                                     },
-              //                                     text: "Submit",
-              //                                     color: Colors.brown,
-              //                                   )
-              //                                 ],
-              //                               ),
-              //                             ),
-              //                           );
-              //                         },
-              //                       );
-              //                     },
-              //                     child: Text('Edit worker'))),
-              //
-              //             //this is delete butoon with dialog
-              //             Align(
-              //                 alignment: Alignment.bottomCenter,
-              //                 child: TextButton(
-              //                     onPressed: () {
-              //                       showDialog(
-              //                         context: context,
-              //                         builder: (context) {
-              //                           return AlertDialog(
-              //                             title: Text(
-              //                               'Conform Delete',
-              //                               style: TextStyle(
-              //                                   color: Colors.black,
-              //                                   fontSize: 25,
-              //                                   fontWeight: FontWeight.bold),
-              //                             ),
-              //                             content: Text(
-              //                               'Are you sure you want to delete',
-              //                               style: TextStyle(
-              //                                   color: Colors.black,
-              //                                   fontSize: 17,
-              //                                   fontWeight: FontWeight.bold),
-              //                             ),
-              //                             actions: [
-              //                               TextButton(
-              //                                 onPressed: () {
-              //                                   Navigator.pop(
-              //                                       context); // Close the dialog
-              //                                 },
-              //                                 child: Text(
-              //                                   'Cancel',
-              //                                   style: TextStyle(
-              //                                       color: Colors.black,
-              //                                       fontSize: 20,
-              //                                       fontWeight: FontWeight.bold),
-              //                                 ),
-              //                               ),
-              //                               // Confirm Button
-              //                               TextButton(
-              //                                 onPressed: () {
-              //                                   // Add your delete logic here
-              //
-              //                                   Navigator.pop(
-              //                                       context); // Close the dialog
-              //                                 },
-              //                                 child: Text(
-              //                                   'OK',
-              //                                   style: TextStyle(
-              //                                       color: Colors.black,
-              //                                       fontSize: 20,
-              //                                       fontWeight: FontWeight.bold),
-              //                                 ),
-              //                               ),
-              //                             ],
-              //                           );
-              //                         },
-              //                       );
-              //                     },
-              //                     child: Text(
-              //                       'delete worker',
-              //                     ))),
-              //           ],
-              //         )
-              //       ],
-              //     ),
-              //   ),
-              // )
+
             ],
           ),
         ),

@@ -3,6 +3,12 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
 import 'package:untitled4/custom/custom_searchbar.dart';
 import 'package:untitled4/custom/customorderbutonscreen.dart';
+import 'package:untitled4/view/UI_screen/ORDERSTATUS_SCREEN/active_status_screen.dart';
+import 'package:untitled4/view/UI_screen/ORDERSTATUS_SCREEN/cancel_status_screen.dart';
+import 'package:untitled4/view/UI_screen/ORDERSTATUS_SCREEN/complete_status_screen.dart';
+import 'package:untitled4/view/UI_screen/ORDERSTATUS_SCREEN/delivered_status_screen.dart';
+import 'package:untitled4/view/UI_screen/ORDERSTATUS_SCREEN/normal_status_screen.dart';
+import 'package:untitled4/view/UI_screen/ORDERSTATUS_SCREEN/urgent_status_screen.dart';
 
 
 
@@ -14,108 +20,78 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  TextEditingController searchcontroller = TextEditingController();
 
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor:   Colors.blue.shade800,
-        centerTitle: true,
-        title: Text(
-          'Order List',
-          style: TextStyle(
-              color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            ZoomDrawer.of(context)!.toggle();
-          },
-          icon: Icon(
-            Icons.menu,
-            size: 30,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(5),
-        child: Column(
-          children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.blue.withOpacity(.5)),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: CustomOrderStatus(title: 'Normal', onTap: () {}),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child:
-                          CustomOrderStatus(title: 'Urgent', onTap: () {}),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: CustomOrderStatus(title: 'Active', onTap: () {}),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child:
-                      CustomOrderStatus(title: 'Completed', onTap: () {}),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
+    return DefaultTabController(
+      length: 6,
+      initialIndex: 0,
 
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child:
-                          CustomOrderStatus(title: 'delevered', onTap: () {}),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
+      child: Scaffold(
+          backgroundColor: Color( 0xFFFFFFFF),
+        appBar: AppBar(
 
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: CustomOrderStatus(title: 'Canceled', onTap: () {}),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                  ],
+          bottom: TabBar(
+            isScrollable: true,
+
+            unselectedLabelColor: Colors.black,
+            labelColor: Colors.white,
+
+            indicator: BoxDecoration(
+              color: Color(0xFF7A7B80),
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.black,
+                  width: 4.0,
                 ),
               ),
             ),
-            SizedBox(
-              height: 20,
+
+            tabs: [
+
+              Tab(text: 'Normal'),
+              Tab(text: 'Urgent'),
+              Tab(text: 'Active'),
+              Tab(text: 'Complete'),
+              Tab(text: 'Delivered'),
+              Tab(text: 'Canceled'),
+
+
+            ],
+          ),
+            backgroundColor: Color( 0xFFFFFFFF),
+          centerTitle: true,
+          title: Text(
+            'Order List',
+            style: TextStyle(
+                color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
+          ),
+          leading: IconButton(
+            onPressed: () {
+              ZoomDrawer.of(context)!.toggle();
+            },
+            icon: Icon(
+              Icons.menu,
+              size: 30,
+              color: Colors.black,
             ),
-            CustomSearchBar(controller: searchcontroller, onSearch: () {}),
-            SizedBox(
-              height: 20,
-            ),
+          ),
+        ),
+        body: TabBarView(
+          children: [
+
+            NormalScreen(),
+            UrgentScreen(),
+            ActiveScreen(),
+            CompletedScreen(),
+            DeliverdScreen(),
+            CancelScreen()
+
 
           ],
-        ),
+        )
       ),
     );
   }
