@@ -36,7 +36,7 @@ backgroundColor: Color(0xFF1D1D26),
 width: double.infinity,
 
 decoration: BoxDecoration(
-  image: DecorationImage(image: AssetImage('images/tailorsplishscreen.JPG'),fit: BoxFit.fill),
+  image: DecorationImage(image: AssetImage('images/splishscreenimg.JPG'),fit: BoxFit.fill),
 
 
 ),

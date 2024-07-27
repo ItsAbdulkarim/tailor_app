@@ -1,58 +1,93 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled4/provider/user_customer_img_provider.dart';
 
+// I MADE THE CHANGE IN THIS SCREEN
+
 class CustomerRecordProvider extends ChangeNotifier {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  bool isLoading= false;
+  bool isLoading = false;
 
-  Future<void> addCustomerRecord({required BuildContext context,
-    required String selectmeasurement,
-   required String Name,
-   required String phone,
-   required String address,
-   required String Gender,
-   required String OrderDate,
-   required String DeliveryDate,
-   required String paymentStatus,
-   required String orderStatus,
-   required String selectWorker,
-   required String suitquantity,
-   required String suitamount,
-   required String suitlength,
-   required String suitsleeveLength,
-    required String suitShoulder,
-    required String suitkalar,
-    required String suitchati,
-    required String suitbaghal,
-    required String suitdaman,
-    required String suitshalwar,
-    required String suitpancha,
-   required String suitnotes,
-   required bool frontpocket,
-   required bool sidepocket,
-   required bool goaldaman,
-   required bool chorasdaman,
-
-    // String shortquantity,
-    // String shortamount,
-    // String addshortnotes,
-    // String shoulder,
-    // // String pantamount,
-    // String pantquantity
-
-
-  }
-
-      ) async {
+  Future<int> getNextCustomerId() async {
     try {
-      isLoading=true;
+      DocumentReference counterRef = FirebaseFirestore.instance.collection('Counters').doc('customerCounter');
+      DocumentSnapshot snapshot = await counterRef.get();
+
+      if (!snapshot.exists) {
+        // Initialize the counter document if it doesn't exist
+        await counterRef.set({'currentId': 1});
+        print('Counter document initialized successfully');
+        return 1; // Return the initial ID
+      }
+
+      // Counter document exists, increment the ID and update the counter
+      int currentId = snapshot['currentId'];
+      int nextId = currentId + 1;
+      await counterRef.update({'currentId': nextId});
+
+      return nextId;
+    } catch (e) {
+      print("Error in getNextCustomerId: $e");
+      return -1; // Return a default value or handle the error accordingly
+    }
+  }
+  Future<void> addCustomerRecord({
+    required BuildContext context,
+    required String selectmeasurement,
+    required String Name,
+    required String phone,
+    required String address,
+    required String Gender,
+    required String OrderDate,
+    required String DeliveryDate,
+    required String paymentStatus,
+    required String orderStatus,
+    required String selectWorker,
+     String? suitquantity,
+     String? suitamount,
+     String? suitlength,
+     String? suitsleeveLength,
+     String? suitShoulder,
+     String? suitkalar,
+     String? suitchati,
+     String? suitbaghal,
+     String? suitdaman,
+     String? suitshalwar,
+     String? suitpancha,
+     String? suitnotes,
+     bool? frontpocket,
+     bool? sidepocket,
+     bool? goaldaman,
+     bool? chorasdaman,
+/////////////////////for shirt//////////////
+
+    String? shirtquantity,
+    String? shirtamount,
+    String? shirtcollar,
+    String? shirtchest,
+    String? shirtwaist,
+    String? shirtshoulder,
+    String? shirtsleeeve,
+    String? shirtlength,
+    String? addshirtnotes,
+    bool? shirtfirst,
+    bool? shirtsecond,
+    bool? shirtthird,
+    bool? shirtforth,
+  }) async {
+    try {
+      isLoading = true;
       notifyListeners();
-      String selectedMeasurement = selectmeasurement.toString();
+
       String uid = FirebaseAuth.instance.currentUser!.uid;
       int dt = DateTime.now().millisecondsSinceEpoch;
+      //
+      // Random random = Random();
+      // int uniqueId = random.nextInt(10000);
 
       var taskRef = _firestore
           .collection('Customerrecord')
@@ -60,11 +95,12 @@ class CustomerRecordProvider extends ChangeNotifier {
           .collection('Customerrecord')
           .doc();
       String? imageUrl = await context.read<UploadImgProvider>().imgurll;
-
-
+      // Get the next unique ID
+      int uniqueId = await getNextCustomerId();
       Map<String, dynamic> customerData = {
         'dt': dt,
         'taskid': taskRef.id,
+        'uniqueId': uniqueId,
         'customerimg': imageUrl,
         'name': Name.trim(),
         'phone': phone.trim(),
@@ -75,38 +111,41 @@ class CustomerRecordProvider extends ChangeNotifier {
         'pamentstatus': paymentStatus,
         'orderstatus': orderStatus,
         'selectedworker': selectWorker,
-        'selectedmeasurement': selectedMeasurement,
+        'selectedmeasurement': selectmeasurement,
       };
 
-      if (selectedMeasurement == 'SUITS') {
+      if (selectmeasurement == 'SUITS') {
         customerData.addAll({
-          'Suitquantity': suitquantity.trim(),
-          'suitamount': suitamount.trim(),
-          'kamizlength': suitlength.trim(),
-          'asteenlength': suitsleeveLength.trim(),
-          'suitshoulderlength':suitShoulder.trim(),
-          'suitkalar':suitkalar.trim(),
-          'suitchati':suitchati.trim(),
-          'suitbaghal':suitbaghal.trim(),
-          'suitdaman':suitdaman.trim(),
-          'suitshalwar':suitshalwar.trim(),
-          'suitshalwarpancha':suitpancha.trim(),
-          'addnotes': suitnotes.trim(),
+          'Suitquantity': suitquantity,
+          'suitamount': suitamount,
+          'kamizlength': suitlength,
+          'asteenlength': suitsleeveLength,
+          'suitshoulderlength': suitShoulder,
+          'suitkalar': suitkalar,
+          'suitchati': suitchati,
+          'suitbaghal': suitbaghal,
+          'suitdaman': suitdaman,
+          'suitshalwar': suitshalwar,
+          'suitshalwarpancha': suitpancha,
+          'addnotes': suitnotes,
           'frontpocket': frontpocket,
           'onesidepocket': sidepocket,
           'goaldaman': goaldaman,
           'chorasdaman': chorasdaman,
-
         });
-      } else if (selectedMeasurement == 'SHIRT') {
+      } else if (selectmeasurement == 'SHIRT') {
         customerData.addAll({
-          // 'Shortquantity': shortquantity.trim(),
-          // 'shortamount': shortamount.trim(),
-          // 'addshortnotes': addshortnotes.trim(),
-          // 'shortshoulderlength': shoulder.trim(),
-          // 'slevelength': suitsleeveLength.trim(),
+          'Shirtquantity': shirtquantity,
+          'shirtamount': shirtamount,
+          'shirtcollar': shirtcollar,
+          'shirtchest': shirtchest,
+          'shirtwaist': shirtwaist,
+          'shirtshoulderlength': shirtshoulder,
+          'shirtslevelength': shirtsleeeve,
+          'shirtlength': shirtlength,
+          'addshirtnotes': addshirtnotes,
         });
-      } else if (selectedMeasurement == 'PAINTS') {
+      } else if (selectmeasurement == 'PAINTS') {
         customerData.addAll({
           // 'paintamount': pantamount.trim(),
           // 'paintquantity': pantquantity.trim(),
@@ -120,12 +159,10 @@ class CustomerRecordProvider extends ChangeNotifier {
     } catch (error) {
       print('Error adding customer record: $error');
       // Handle error as needed
-    }finally{
-
-      isLoading=false;
+    } finally {
+      isLoading = false;
       notifyListeners();
       Navigator.pop(context);
-
     }
   }
 }

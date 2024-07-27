@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled4/provider/see_customer_provder.dart';
 import 'package:untitled4/view/UI_screen/update_screen.dart';
+import 'package:untitled4/view/UI_screen/updateshirtscreen.dart';
 
 import 'bottomnavigationbar.dart';
 
@@ -20,7 +19,8 @@ class SeeCustomerDetailUpdateScreen extends StatefulWidget {
       _SeeCustomerDetailUpdateScreenState();
 }
 
-class _SeeCustomerDetailUpdateScreenState extends State<SeeCustomerDetailUpdateScreen> {
+class _SeeCustomerDetailUpdateScreenState
+    extends State<SeeCustomerDetailUpdateScreen> {
   @override
   // CollectionReference? tasksRef;
   // @override
@@ -39,7 +39,6 @@ class _SeeCustomerDetailUpdateScreenState extends State<SeeCustomerDetailUpdateS
         backgroundColor: Color(0xFFFFFFFF),
         appBar: AppBar(
           backgroundColor: Color(0xFFFFFFFF),
-
           centerTitle: true,
           title: Text(
             'see detail',
@@ -57,10 +56,10 @@ class _SeeCustomerDetailUpdateScreenState extends State<SeeCustomerDetailUpdateS
             ),
           ),
         ),
-        body:StreamBuilder<QuerySnapshot>(
+        body: StreamBuilder<QuerySnapshot>(
           stream: context.read<CustomerDetailPorvider>().getCustomerData(),
           builder: (context, snapshot) {
-            List<DocumentSnapshot> tasklist = snapshot.data?.docs??[];
+            List<DocumentSnapshot> tasklist = snapshot.data?.docs ?? [];
 
             if (snapshot.connectionState == ConnectionState.none) {
               return const Center(child: Text('No connection yet'));
@@ -86,17 +85,20 @@ class _SeeCustomerDetailUpdateScreenState extends State<SeeCustomerDetailUpdateS
                         height: 100,
                         decoration: BoxDecoration(
                             color: Color(0xFFF1F1F1),
-                            borderRadius: BorderRadius.circular(20)
-
-                        ),
+                            borderRadius: BorderRadius.circular(20)),
                         child: Row(
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
                                   left: 8, top: 5, bottom: 5),
                               child: CircleAvatar(
-                                backgroundImage: tasklist[index]['customerimg'] !=null?NetworkImage(tasklist[index]['customerimg']):NetworkImage('https://tse1.mm.bing.net/th?id=OIP.zyj0FFO-lfhm8uzozYdpbgHaHa&pid=Api&P=0&h=220'),
-
+                                backgroundImage: tasklist[index]
+                                            ['customerimg'] !=
+                                        null
+                                    ? NetworkImage(
+                                        tasklist[index]['customerimg'])
+                                    : NetworkImage(
+                                        'https://tse1.mm.bing.net/th?id=OIP.zyj0FFO-lfhm8uzozYdpbgHaHa&pid=Api&P=0&h=220'),
                                 radius: 40,
                               ),
                             ),
@@ -105,29 +107,39 @@ class _SeeCustomerDetailUpdateScreenState extends State<SeeCustomerDetailUpdateS
                             ),
                             Expanded(
                               child: ListTile(
-                                title: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Text(tasklist[index]['name']),
-                                    Text(tasklist[index]['phone']),
-                                    Text(
-                                      '${DateFormat('d MMMM y H:mm').format(DateTime.fromMillisecondsSinceEpoch(tasklist[index]['dt'] as int))}',
+                                  title: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(tasklist[index]['name']),
+                                      Text(tasklist[index]['phone']),
+                                      Text(
+                                        '${DateFormat('d MMMM y H:mm').format(DateTime.fromMillisecondsSinceEpoch(tasklist[index]['dt'] as int))}',
+                                      )
+                                    ],
+                                  ),
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      String taskID = tasklist[index].id;
+                                      var selectmeasurement = tasklist[index]
+                                          ['selectedmeasurement'];
+                                      if (selectmeasurement == 'SHIRT') {
+                                        Get.to(UpdateShirtScreen(
+                                          taskSnapshot: tasklist[index],
+                                          taskID: taskID,
+                                        ));
+                                      } else if (selectmeasurement == 'SUITS') {
+                                        Get.to(UpdateCustomerScreen(
+                                          taskSnapshot: tasklist[index],
+                                          taskID: taskID,
+                                        ));
+                                      }
 
-                                    )
-
-                                  ],
-                                ),
-                                trailing: IconButton(onPressed: (){
-                                  String taskID = tasklist[index].id;
-                                  // Pass the taskID to the UpdateRecordScreen
-                                  Get.to(UpdateCustomerScreen(taskSnapshot: tasklist[index],
-
-                                  taskID: taskID,
-                                  ));
-                                },icon: Icon(Icons.edit),)
-                              ),
+                                      // Pass the taskID to the UpdateRecordScreen
+                                    },
+                                    icon: Icon(Icons.edit),
+                                  )),
                             )
                           ],
                         ),
@@ -145,6 +157,5 @@ class _SeeCustomerDetailUpdateScreenState extends State<SeeCustomerDetailUpdateS
             return const Center(child: Text('Unexpected ConnectionState'));
           },
         ));
-
   }
 }

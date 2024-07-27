@@ -25,15 +25,19 @@ class _TransactionScreenState extends State<TransactionScreen> {
           centerTitle: true,
 
           bottom: TabBar(
-            indicatorColor: Colors.deepPurple,
+
             indicatorSize: TabBarIndicatorSize.tab,
             labelColor: Colors.white,
+indicatorPadding: EdgeInsets.symmetric(horizontal: 70),
             indicator: BoxDecoration(
               color: Color(0xFF7A7B80),
-                  borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10)
+
+
+
             ),
             tabs: [
-Tab(icon: Icon(Icons.paid_outlined),text: 'paid',),
+Tab(icon: Icon(Icons.paid_outlined),text: '  paid  ',),
               Tab(icon: Icon(Icons.paid_outlined),text: 'Unpaid',)
 
 

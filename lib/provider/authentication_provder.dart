@@ -11,7 +11,7 @@ class AuthenticationProvider extends ChangeNotifier {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 //this is user registeration method
   Future<void> userRegisteration(
-      BuildContext context, name, email, password, comporpassword) async {
+      BuildContext context, name,phone, email, password, comporpassword) async {
     try {
       isLoading = true;
       notifyListeners();
@@ -25,7 +25,8 @@ class AuthenticationProvider extends ChangeNotifier {
           'shopeName': name,
           'email': email,
           'password': password,
-          'photo': null,
+          'photo': '',
+          'phone':phone,
           'createddate': DateTime.now().millisecondsSinceEpoch,
         });
 

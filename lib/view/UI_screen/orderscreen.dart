@@ -35,18 +35,20 @@ class _OrderScreenState extends State<OrderScreen> {
 
           bottom: TabBar(
             isScrollable: true,
-
+indicatorSize: TabBarIndicatorSize.tab,
+            padding: EdgeInsets.symmetric(horizontal: 40),
             unselectedLabelColor: Colors.black,
             labelColor: Colors.white,
 
             indicator: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
               color: Color(0xFF7A7B80),
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.black,
-                  width: 4.0,
-                ),
-              ),
+              // border: Border(
+              //   bottom: BorderSide(
+              //     color: Colors.black,
+              //     width: 4.0,
+              //   ),
+              // ),
             ),
 
             tabs: [

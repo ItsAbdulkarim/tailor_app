@@ -11,9 +11,11 @@ import 'package:untitled4/provider/deleteprovder.dart';
 import 'package:untitled4/provider/search_customer_provider.dart';
 import 'package:untitled4/provider/see_customer_provder.dart';
 import 'package:untitled4/view/UI_screen/seecustomer_in%20_fullscreen.dart';
+import 'package:untitled4/view/UI_screen/shirtscreenfull.dart';
 
 import 'bottomnavigationbar.dart';
 
+// MAD THE CHANGE IN THIS SCREEN
 class SeeCustomerDetailScreen extends StatefulWidget {
   const SeeCustomerDetailScreen({super.key});
 
@@ -24,17 +26,6 @@ class SeeCustomerDetailScreen extends StatefulWidget {
 
 class _SeeCustomerDetailScreenState extends State<SeeCustomerDetailScreen> {
   @override
-  // CollectionReference? tasksRef;
-  // @override
-  // void initState() {
-  //   String uid = FirebaseAuth.instance.currentUser!.uid;
-  //   tasksRef = FirebaseFirestore.instance
-  //       .collection('Customerrecord')
-  //       .doc(uid)
-  //       .collection('Customerrecord');
-  //
-  //   super.initState();
-  // }
   String _searchQuery = '';
   bool _searchByPhone = false;
 
@@ -43,10 +34,8 @@ class _SeeCustomerDetailScreenState extends State<SeeCustomerDetailScreen> {
         backgroundColor: Color(0xFFFFFFFF),
         appBar: AppBar(
           backgroundColor: Color(0xFFFFFFFF),
-
           centerTitle: true,
           actions: [
-
             Switch(
               activeColor: Colors.black,
               value: _searchByPhone,
@@ -75,38 +64,37 @@ class _SeeCustomerDetailScreenState extends State<SeeCustomerDetailScreen> {
         ),
         body: Column(
           children: [
-
-
-
             Padding(
               padding: const EdgeInsets.all(16),
               child: TextField(
-              onChanged: (value) {
-    setState(() {
-    _searchQuery = value.toLowerCase(); // Update search query
-    });
-    },
-      decoration: InputDecoration(
-        labelText: _searchByPhone?'Search by phone number':'Search by Name',
-        prefixIcon: Icon(Icons.search),
-        border: OutlineInputBorder(),
-      ),
-    ),
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value.toLowerCase(); // Update search query
+                  });
+                },
+                decoration: InputDecoration(
+                  labelText: _searchByPhone
+                      ? 'Search by phone number'
+                      : 'Search by Name',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ),
+              ),
             ),
-
-SizedBox(height: 10,),
-
+            SizedBox(
+              height: 10,
+            ),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                stream:_searchQuery.isEmpty
+                stream: _searchQuery.isEmpty
                     ? context.read<CustomerDetailPorvider>().getCustomerData()
                     : _searchByPhone
-                    ? context
-                    .read<SearchProvider>()
-                    .searchUserBYPhone(_searchQuery)
-                    : context
-                    .read<SearchProvider>()
-                    .searchUserByName(_searchQuery),
+                        ? context
+                            .read<SearchProvider>()
+                            .searchUserBYPhone(_searchQuery)
+                        : context
+                            .read<SearchProvider>()
+                            .searchUserByName(_searchQuery),
                 builder: (context, snapshot) {
                   List<DocumentSnapshot> tasklist = snapshot.data?.docs ?? [];
 
@@ -115,7 +103,8 @@ SizedBox(height: 10,),
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: SpinKitDualRing(color: Colors.purple));
+                    return const Center(
+                        child: SpinKitDualRing(color: Colors.purple));
                   }
 
                   if (tasklist.isEmpty) {
@@ -124,8 +113,10 @@ SizedBox(height: 10,),
 
                   if (snapshot.hasData) {
                     return ListView.builder(
+
                       itemCount: tasklist.length,
                       itemBuilder: (context, index) {
+                        print('ttththththththththth${tasklist[index]['uniqueId']}');
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: Column(
@@ -135,45 +126,131 @@ SizedBox(height: 10,),
                                 child: Container(
                                   height: 100,
                                   decoration: BoxDecoration(
-                                    color: Color(0xFFF1F1F1),
-                                    borderRadius: BorderRadius.circular(20)
-
-                                  ),
-
+                                      color: Color(0xFFF1F1F1),
+                                      borderRadius: BorderRadius.circular(20)),
                                   child: GestureDetector(
-                                    onTap: (){
+                                    onTap: () {
+                                    var selectmeasurement=  tasklist[index]['selectedmeasurement'];
+print(selectmeasurement);
+                                      if(selectmeasurement=='SHIRT'){
+                                        Get.to(ViewShirtRecord(
+                                            name: tasklist[index]['name'],
+                                            phone: tasklist[index]['phone'],
+                                            addresss: tasklist[index]['address'],
+                                            gender: tasklist[index]['gender'],
+                                            orderdate: tasklist[index]['orderdate'],
+                                            deleverdate: tasklist[index]
+                                            ['deliverydate'],
+                                            pamentstatus: tasklist[index]
+                                            ['pamentstatus'],
+                                            orderstatus: tasklist[index]
+                                            ['orderstatus'],
+                                            worker: tasklist[index]
+                                            ['selectedworker'],
+                                            selectmeasurrement: tasklist[index]
+                                            ['selectedmeasurement'],
+                                            shirtquantity: tasklist[index]['Shirtquantity'],
+                                            shirtamount: tasklist[index][ 'shirtamount'],
+                                            shirtcollar: tasklist[index][ 'shirtcollar'],
+                                            shirtchest: tasklist[index]['shirtchest'],
+                                            shirtwaist: tasklist[index]['shirtwaist'],
+                                            shirtshoulder: tasklist[index]['shirtshoulderlength'],
+                                            shirtsleeeve: tasklist[index]['shirtslevelength'],
+                                            shirtlength: tasklist[index]['shirtlength'],
+                                            addshirtnotes: tasklist[index]['addshirtnotes'],
+
+                                          dt:tasklist[index]['dt'].toString(), ));
+
+                                      }else if(selectmeasurement=='SUITS'){
+
+
                                       Get.to(FullRecordScreen(
                                         name: tasklist[index]['name'],
                                         phone: tasklist[index]['phone'],
-                                        addresss: tasklist[index][ 'address'],
-                                        gender: tasklist[index][ 'gender'],
+                                        addresss: tasklist[index]['address'],
+                                        gender: tasklist[index]['gender'],
                                         orderdate: tasklist[index]['orderdate'],
-                                        deleverdate: tasklist[index][   'deliverydate'],
-                                        pamentstatus: tasklist[index][ 'pamentstatus'],
-                                        orderstatus: tasklist[index][   'orderstatus'],
-                                        worker: tasklist[index][ 'selectedworker'],
-                                        selectmeasurrement: tasklist[index][ 'selectedmeasurement'],
-                                        suitquantity: tasklist[index][   'Suitquantity'],
-                                        suitamount: tasklist[index][  'suitamount'],
-                                        suitlength: tasklist[index][    'kamizlength'],
-                                        suitslevelength: tasklist[index][  'asteenlength'],
-                                        suitshoulder: tasklist[index][ 'suitshoulderlength'],
-                                        suitkalar: tasklist[index][ 'suitkalar'],
-                                        suitchest: tasklist[index][  'suitchati'],
-                                        suitarmhole: tasklist[index][  'suitbaghal'],
-                                        suitdaman: tasklist[index][ 'suitdaman'],
-                                        suitpancha: tasklist[index][  'suitshalwarpancha'],
-                                        suitshalwar: tasklist[index][  'suitshalwar'],
-                                        suitnotes: tasklist[index][  'addnotes'],
-                                        sidepocket: tasklist[index][ 'onesidepocket'],
-                                        goaldaman:  tasklist[index][    'goaldaman'],
-                                        frontpocket:  tasklist[index][ 'frontpocket'],
-                                        widedaman:  tasklist[index][  'chorasdaman'],
+                                        deleverdate: tasklist[index]
+                                            ['deliverydate'],
+                                        pamentstatus: tasklist[index]
+                                            ['pamentstatus'],
+                                        orderstatus: tasklist[index]
+                                            ['orderstatus'],
+                                        worker: tasklist[index]
+                                            ['selectedworker'],
+                                        selectmeasurrement: tasklist[index]
+                                            ['selectedmeasurement'],
+                                        suitquantity: tasklist[index]
+                                            ['Suitquantity'],
+                                        suitamount: tasklist[index]
+                                            ['suitamount'],
+                                        suitlength: tasklist[index]
+                                            ['kamizlength'],
+                                        suitslevelength: tasklist[index]
+                                            ['asteenlength'],
+                                        suitshoulder: tasklist[index]
+                                            ['suitshoulderlength'],
+                                        suitkalar: tasklist[index]['suitkalar'],
+                                        suitchest: tasklist[index]['suitchati'],
+                                        suitarmhole: tasklist[index]
+                                            ['suitbaghal'],
+                                        suitdaman: tasklist[index]['suitdaman'],
+                                        suitpancha: tasklist[index]
+                                            ['suitshalwarpancha'],
+                                        suitshalwar: tasklist[index]
+                                            ['suitshalwar'],
+                                        suitnotes: tasklist[index]['addnotes'],
+                                        sidepocket: tasklist[index]
+                                            ['onesidepocket'],
+                                        goaldaman: tasklist[index]['goaldaman'],
+                                        frontpocket: tasklist[index]
+                                            ['frontpocket'],
+                                        widedaman: tasklist[index]
+                                            ['chorasdaman'],
                                         dt: tasklist[index]['dt'].toString(),
-                                        customerImg: tasklist[index]['customerimg'],
+                                        customerImg: tasklist[index]
+                                            ['customerimg'],
+                                        // shirtamount: tasklist[index]
+                                        //         ['Shirtquantity']
+                                        //     .toString(),
+                                        // shirtquantity: tasklist[index]
+                                        //         ['Shirtquantity']
+                                        //     .toString(),
+                                        // shirtcollar: tasklist[index]
+                                        //         ['Shirtquantity']
+                                        //     .toString(),
+                                        // shirtchest: tasklist[index]
+                                        //         ['Shirtquantity']
+                                        //     .toString(),
+                                        // shirtwaist: tasklist[index]
+                                        //         ['Shirtquantity']
+                                        //     .toString(),
+                                        // shirtshoulder: tasklist[index]
+                                        //         ['Shirtquantity']
+                                        //     .toString(),
+                                        // shirtsleeeve: tasklist[index]
+                                        //         ['Shirtquantity']
+                                        //     .toString(),
+                                        // shirtlength: tasklist[index]
+                                        //         ['Shirtquantity']
+                                        //     .toString(),
+                                        // addshirtnotes: tasklist[index]
+                                        //         ['Shirtquantity']
+                                        //     .toString(),
+                                        // shirtfirst: tasklist[index]
+                                        //     ['Shirtquantity'],
+                                        // shirtsecond: tasklist[index]
+                                        //     ['Shirtquantity'],
+                                        // shirtthird: tasklist[index]
+                                        //     ['Shirtquantity'],
+                                        // shirtforth: tasklist[index]
+                                        //     ['Shirtquantity'],
+                                      )
 
-                                         ));
+                                      );
 
+
+                                      }
                                     },
                                     child: Row(
                                       children: [
@@ -181,13 +258,16 @@ SizedBox(height: 10,),
                                           padding: const EdgeInsets.only(
                                               left: 8, top: 5, bottom: 5),
                                           child: CircleAvatar(
-                                         backgroundImage: tasklist[index]['customerimg'] !=null?NetworkImage(tasklist[index]['customerimg']):NetworkImage('https://tse1.mm.bing.net/th?id=OIP.zyj0FFO-lfhm8uzozYdpbgHaHa&pid=Api&P=0&h=220'),
-
-
+                                            backgroundImage: tasklist[index]
+                                                        ['customerimg'] !=
+                                                    null
+                                                ? NetworkImage(tasklist[index]
+                                                    ['customerimg'])
+                                                : NetworkImage(
+                                                    'https://tse1.mm.bing.net/th?id=OIP.zyj0FFO-lfhm8uzozYdpbgHaHa&pid=Api&P=0&h=220'),
                                             radius: 40,
                                           ),
                                         ),
-
                                         SizedBox(
                                           width: 10,
                                         ),
@@ -200,14 +280,11 @@ SizedBox(height: 10,),
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(tasklist[index]['name']),
+                                                Text(tasklist[index]['uniqueId'].toString()),
                                                 Text(tasklist[index]['phone']),
                                                 Text(
                                                   '${DateFormat('d MMMM y H:mm').format(DateTime.fromMillisecondsSinceEpoch(tasklist[index]['dt'] as int))}',
-
                                                 )
-
-
-
                                               ],
                                             ),
                                             trailing: GestureDetector(
@@ -217,31 +294,39 @@ SizedBox(height: 10,),
                                                     context: context,
                                                     builder: (context) {
                                                       return AlertDialog(
-                                                        title: Text('Confirm Deletion'),
+                                                        title: Text(
+                                                            'Confirm Deletion'),
                                                         actions: [
                                                           TextButton(
                                                             onPressed: () {
-                                                              Navigator.pop(context); // Close the dialog
+                                                              Navigator.pop(
+                                                                  context); // Close the dialog
                                                             },
-                                                            child: Text('Cancel'),
+                                                            child:
+                                                                Text('Cancel'),
                                                           ),
                                                           TextButton(
-                                                              onPressed: () async {
+                                                              onPressed:
+                                                                  () async {
                                                                 String taskID =
-                                                                    tasklist[index].id;
-                                                                String imgurl=tasklist[index][ 'phone'];
+                                                                    tasklist[
+                                                                            index]
+                                                                        .id;
+                                                                String imgurl =
+                                                                    tasklist[
+                                                                            index]
+                                                                        [
+                                                                        'phone'];
                                                                 await context
                                                                     .read<
                                                                         DeleteRecordProvider>()
                                                                     .deleteCustomerRecord(
                                                                         context,
                                                                         taskID,
-                                                                  imgurl
-
-                                                                );
-
+                                                                        imgurl);
                                                               },
-                                                              child: Text('Delete'))
+                                                              child: Text(
+                                                                  'Delete'))
                                                         ],
                                                       );
                                                     },
@@ -269,7 +354,8 @@ SizedBox(height: 10,),
                     return const Center(child: Text('Something went wrong'));
                   }
 
-                  return const Center(child: Text('Unexpected ConnectionState'));
+                  return const Center(
+                      child: Text('Unexpected ConnectionState'));
                 },
               ),
             ),

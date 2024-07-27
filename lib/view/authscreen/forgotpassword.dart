@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:untitled4/custom/custombutton.dart';
@@ -6,7 +9,6 @@ import 'package:untitled4/view/authscreen/otpscreen.dart';
 import 'package:untitled4/view/authscreen/signin.dart';
 
 import '../../custom/customtextformfield.dart';
-
 
 class ForgetPassword extends StatefulWidget {
   const ForgetPassword({super.key});
@@ -17,16 +19,19 @@ class ForgetPassword extends StatefulWidget {
 
 class _ForgetPasswordState extends State<ForgetPassword> {
   TextEditingController forgotpasswordcontroller = TextEditingController();
+  bool isLoading= false;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-
           leading: InkWell(
-            onTap: (){Get.to(SignInScreen());},
-            child: Icon(Icons.arrow_back_ios,
-            size: 35,
+            onTap: () {
+              Get.to(SignInScreen());
+            },
+            child: Icon(
+              Icons.arrow_back_ios,
+              size: 35,
               color: Colors.black87,
             ),
           ),
@@ -34,7 +39,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         body: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
           child: SingleChildScrollView(
-            physics: NeverScrollableScrollPhysics(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,13 +83,54 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   height: 20,
                 ),
                 CustomButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      String forgotemail = forgotpasswordcontroller.text.trim();
+                      if (forgotemail.isNotEmpty) {
 
-                      Get.to(OtpScreen());
+                        try {
 
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Please wait.......'),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SpinKitDualRing(
+                                      color: Colors.blue,
+                                      size: 70,
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Text('email is send to $forgotemail...'),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                          await FirebaseAuth.instance
+                              .sendPasswordResetEmail(email: forgotemail);
+                          Fluttertoast.showToast(
+                              msg: 'email is send to $forgotemail',
+                              fontSize: 30,
+                              toastLength: Toast.LENGTH_LONG);
 
+                        } on FirebaseAuthException catch (e) {
+                          Navigator.pop(context);
+                          Fluttertoast.showToast(msg: e.message!, fontSize: 30);
+                        } finally {
+                          Navigator.pop(context);
+                          forgotpasswordcontroller.clear();
+                        }
+                      } else {
 
-                    }, color: Colors.blue, text: 'Submit')
+                        Fluttertoast.showToast(msg: "please provide email");
+                      }
+                    },
+                    color: Color(0xFF7A7B80),
+                    text: 'Submit')
               ],
             ),
           ),

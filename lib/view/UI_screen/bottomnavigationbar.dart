@@ -12,7 +12,8 @@ import 'package:untitled4/provider/themprovider.dart';
 import 'package:untitled4/provider/user_customer_img_provider.dart';
 import 'package:untitled4/view/UI_screen/TransactionScreen.dart';
 import 'package:untitled4/view/UI_screen/homescreen.dart';
-import 'package:untitled4/view/UI_screen/invoicescreen.dart';
+import 'package:untitled4/view/UI_screen/invoicescreenforsuit.dart';
+import 'package:untitled4/view/UI_screen/invoicescreenfirst.dart';
 import 'package:untitled4/view/UI_screen/orderscreen.dart';
 import 'package:untitled4/view/authscreen/signin.dart';
 
@@ -359,7 +360,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
     HomeScreen(),
     OrderScreen(),
     TransactionScreen(),
-    InvoiceScreen()
+    InvoiceFirstScreen()
   ];
 
   @override

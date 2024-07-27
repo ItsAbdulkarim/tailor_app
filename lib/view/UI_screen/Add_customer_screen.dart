@@ -38,8 +38,6 @@ class AddCustomerScreen extends StatefulWidget {
 }
 
 class _AddCustomerScreenState extends State<AddCustomerScreen> {
-
-
   var Namecontroller = TextEditingController();
   var phonecontroller = TextEditingController();
   var addresscontroller = TextEditingController();
@@ -73,20 +71,17 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
   bool goaldaman = false;
   bool chorasdaman = false;
 
-
 //short controller
-  TextEditingController shortquantitycontroller = TextEditingController();
-  TextEditingController shortamountcontroller = TextEditingController();
-  TextEditingController shirtLengthController = TextEditingController();
-  TextEditingController chestController = TextEditingController();
-  TextEditingController waistController = TextEditingController();
-  TextEditingController hipController = TextEditingController();
-  TextEditingController sleeveLengthController = TextEditingController();
-  TextEditingController shoulderController = TextEditingController();
-  TextEditingController collarController = TextEditingController();
-  TextEditingController cuffController = TextEditingController();
+  TextEditingController shirtquantitycontroller = TextEditingController();
+  TextEditingController shirtamountcontroller = TextEditingController();
+  TextEditingController shirtcollarc = TextEditingController();
+  TextEditingController shirtchestc = TextEditingController();
+  TextEditingController shirtwaistc = TextEditingController();
+  TextEditingController shirtshoulderc = TextEditingController();
+  TextEditingController shirtsleevec = TextEditingController();
+  TextEditingController shirtlengthc = TextEditingController();
 
-  TextEditingController addshortnotecontroller = TextEditingController();
+  TextEditingController addshirtnotecontroller = TextEditingController();
   // TextEditingController addnotescontroller = TextEditingController();
 
   //paint controller
@@ -116,11 +111,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
   TextEditingController suitchestController = TextEditingController();
   TextEditingController suitarmholeController = TextEditingController();
   TextEditingController suitdamanController = TextEditingController();
-  TextEditingController suitshalwarController =
-      TextEditingController();
-  TextEditingController suitpanchaController =
-      TextEditingController();
-
+  TextEditingController suitshalwarController = TextEditingController();
+  TextEditingController suitpanchaController = TextEditingController();
 
   TextEditingController suitnotescontroller = TextEditingController();
 
@@ -594,11 +586,10 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     ),
                                     Expanded(
                                         child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 60),
+                                      padding: const EdgeInsets.only(right: 60),
                                       child: MeasurementTextField(
                                           labelText: '',
-                                          controller: shortquantitycontroller),
+                                          controller: shirtquantitycontroller),
                                     ))
                                   ],
                                 ),
@@ -617,11 +608,10 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     ),
                                     Expanded(
                                         child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 60),
+                                      padding: const EdgeInsets.only(right: 60),
                                       child: MeasurementTextField(
                                           labelText: '',
-                                          controller: shortamountcontroller),
+                                          controller: shirtamountcontroller),
                                     ))
                                   ],
                                 ),
@@ -632,24 +622,24 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   children: [
                                     Expanded(
                                       child: MeasurementTextField(
-                                          labelText: "Shoulder",
-                                          controller: shoulderController),
+                                          labelText: "collar",
+                                          controller: shirtcollarc),
                                     ),
                                     SizedBox(
                                       width: 10,
                                     ),
                                     Expanded(
                                       child: MeasurementTextField(
-                                          labelText: "Sleeve",
-                                          controller: sleeveLengthController),
+                                          labelText: "chest",
+                                          controller: shirtchestc),
                                     ),
                                     SizedBox(
                                       width: 10,
                                     ),
                                     Expanded(
                                       child: MeasurementTextField(
-                                          labelText: "Hip Size",
-                                          controller: hipController),
+                                          labelText: "waist",
+                                          controller: shirtwaistc),
                                     ),
                                   ],
                                 ),
@@ -660,16 +650,16 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   children: [
                                     Expanded(
                                       child: MeasurementTextField(
-                                          labelText: "Waist Size",
-                                          controller: waistController),
+                                          labelText: "shoulder",
+                                          controller: shirtshoulderc),
                                     ),
                                     SizedBox(
                                       width: 10,
                                     ),
                                     Expanded(
                                       child: MeasurementTextField(
-                                          labelText: "Chest Size",
-                                          controller: chestController),
+                                          labelText: "sleeve",
+                                          controller: shirtsleevec),
                                     ),
                                     SizedBox(
                                       width: 10,
@@ -677,7 +667,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     Expanded(
                                       child: MeasurementTextField(
                                           labelText: "length ",
-                                          controller: shirtLengthController),
+                                          controller: shirtlengthc),
                                     ),
                                   ],
                                 ),
@@ -685,7 +675,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   height: 10,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
@@ -698,7 +689,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('first'),
-
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -710,7 +700,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('second'),
-
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -728,7 +717,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   height: 10,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
@@ -741,7 +731,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('forth'),
-
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -753,7 +742,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('fifth'),
-
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -784,66 +772,66 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   height: 5,
                                 ),
                                 SpecialInstructionContainer(
-                                    controller: addshortnotecontroller,
+                                    controller: addshirtnotecontroller,
                                     hinttext:
                                         'Please write your special instruction here'),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'SPECIAL INSTRUCTIONS AUDIO',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Icon(
-                                      Icons.mic,
-                                      color: Colors.brown,
-                                      size: 36,
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                CustomAudioInstruction(
-                                  iconData: Icons.play_circle_outline,
-                                  iconDataa: Icons.delete_outline,
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    'SELECT THE CLOTH IMAGE HERE',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                ClothImageContainer(
-                                    child: Column(
-                                  children: [
-                                    Image.asset(
-                                      'images/cloth.jpeg',
-                                      width: double.infinity,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              .3,
-                                      fit: BoxFit.cover,
-                                    )
-                                  ],
-                                ))
+                                // SizedBox(
+                                //   height: 15,
+                                // ),
+                                // Row(
+                                //   mainAxisAlignment:
+                                //       MainAxisAlignment.spaceBetween,
+                                //   children: [
+                                //     Text(
+                                //       'SPECIAL INSTRUCTIONS AUDIO',
+                                //       style: TextStyle(
+                                //           color: Colors.black,
+                                //           fontSize: 18,
+                                //           fontWeight: FontWeight.bold),
+                                //     ),
+                                //     Icon(
+                                //       Icons.mic,
+                                //       color: Colors.brown,
+                                //       size: 36,
+                                //     )
+                                //   ],
+                                // ),
+                                // SizedBox(
+                                //   height: 10,
+                                // ),
+                                // CustomAudioInstruction(
+                                //   iconData: Icons.play_circle_outline,
+                                //   iconDataa: Icons.delete_outline,
+                                // ),
+                                // SizedBox(
+                                //   height: 15,
+                                // ),
+                                // Align(
+                                //   alignment: Alignment.topLeft,
+                                //   child: Text(
+                                //     'SELECT THE CLOTH IMAGE HERE',
+                                //     style: TextStyle(
+                                //         color: Colors.black,
+                                //         fontSize: 18,
+                                //         fontWeight: FontWeight.bold),
+                                //   ),
+                                // ),
+                                // SizedBox(
+                                //   height: 5,
+                                // ),
+                                // ClothImageContainer(
+                                //     child: Column(
+                                //   children: [
+                                //     Image.asset(
+                                //       'images/cloth.jpeg',
+                                //       width: double.infinity,
+                                //       height:
+                                //           MediaQuery.of(context).size.height *
+                                //               .3,
+                                //       fit: BoxFit.cover,
+                                //     )
+                                //   ],
+                                // ))
                               ],
                             ),
                           ),
@@ -864,8 +852,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     ),
                                     Expanded(
                                         child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 60),
+                                      padding: const EdgeInsets.only(right: 60),
                                       child: MeasurementTextField(
                                           labelText: '',
                                           controller: pantquantitycontroller),
@@ -887,8 +874,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     ),
                                     Expanded(
                                         child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 60),
+                                      padding: const EdgeInsets.only(right: 60),
                                       child: MeasurementTextField(
                                           labelText: '',
                                           controller: pantamountcontroller),
@@ -986,7 +972,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   height: 10,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
@@ -999,7 +986,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('first'),
-
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -1011,7 +997,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('second'),
-
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -1029,7 +1014,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   height: 10,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
@@ -1042,7 +1028,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('forth'),
-
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -1054,7 +1039,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                       },
                                     ),
                                     Text('fifth'),
-                                   
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.brown),
@@ -1088,63 +1072,63 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     controller: addinstructionpantcontroller,
                                     hinttext:
                                         'Please write your special instruction here'),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'SPECIAL INSTRUCTIONS AUDIO',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Icon(
-                                      Icons.mic,
-                                      color: Colors.brown,
-                                      size: 36,
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                CustomAudioInstruction(
-                                  iconData: Icons.play_circle_outline,
-                                  iconDataa: Icons.delete_outline,
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    'SELECT THE CLOTH IMAGE HERE',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                ClothImageContainer(
-                                    child: Column(
-                                  children: [
-                                    Image.asset(
-                                      'images/cloth.jpeg',
-                                      width: double.infinity,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              .3,
-                                      fit: BoxFit.cover,
-                                    )
-                                  ],
-                                ))
+                                // SizedBox(
+                                //   height: 15,
+                                // ),
+                                // Row(
+                                //   mainAxisAlignment:
+                                //       MainAxisAlignment.spaceBetween,
+                                //   children: [
+                                //     Text(
+                                //       'SPECIAL INSTRUCTIONS AUDIO',
+                                //       style: TextStyle(
+                                //           color: Colors.black,
+                                //           fontSize: 18,
+                                //           fontWeight: FontWeight.bold),
+                                //     ),
+                                //     Icon(
+                                //       Icons.mic,
+                                //       color: Colors.brown,
+                                //       size: 36,
+                                //     )
+                                //   ],
+                                // ),
+                                // SizedBox(
+                                //   height: 10,
+                                // ),
+                                // CustomAudioInstruction(
+                                //   iconData: Icons.play_circle_outline,
+                                //   iconDataa: Icons.delete_outline,
+                                // ),
+                                // SizedBox(
+                                //   height: 15,
+                                // ),
+                                // Align(
+                                //   alignment: Alignment.topLeft,
+                                //   child: Text(
+                                //     'SELECT THE CLOTH IMAGE HERE',
+                                //     style: TextStyle(
+                                //         color: Colors.black,
+                                //         fontSize: 18,
+                                //         fontWeight: FontWeight.bold),
+                                //   ),
+                                // ),
+                                // SizedBox(
+                                //   height: 5,
+                                // ),
+                                // ClothImageContainer(
+                                //     child: Column(
+                                //   children: [
+                                //     Image.asset(
+                                //       'images/cloth.jpeg',
+                                //       width: double.infinity,
+                                //       height:
+                                //           MediaQuery.of(context).size.height *
+                                //               .3,
+                                //       fit: BoxFit.cover,
+                                //     )
+                                //   ],
+                                // ))
                               ],
                             ),
                           ),
@@ -1165,8 +1149,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     ),
                                     Expanded(
                                         child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 60),
+                                      padding: const EdgeInsets.only(right: 60),
                                       child: MeasurementTextField(
                                           labelText: '',
                                           controller: shkamizquantity),
@@ -1188,8 +1171,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     ),
                                     Expanded(
                                         child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 60),
+                                      padding: const EdgeInsets.only(right: 60),
                                       child: MeasurementTextField(
                                           labelText: '',
                                           controller: shkamizamount),
@@ -1212,8 +1194,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     Expanded(
                                       child: MeasurementTextField(
                                           labelText: "آستین /Sleeve",
-                                          controller:
-                                              suitsleeveController),
+                                          controller: suitsleeveController),
                                     ),
                                     SizedBox(
                                       width: 10,
@@ -1221,8 +1202,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     Expanded(
                                       child: MeasurementTextField(
                                           labelText: "تیرا /Shoulder",
-                                          controller:
-                                              suitshoulderController),
+                                          controller: suitshoulderController),
                                     ),
                                   ],
                                 ),
@@ -1242,8 +1222,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     Expanded(
                                       child: MeasurementTextField(
                                           labelText: "چھاتی /Chest",
-                                          controller:
-                                              suitchestController),
+                                          controller: suitchestController),
                                     ),
                                     SizedBox(
                                       width: 10,
@@ -1263,8 +1242,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     Expanded(
                                       child: MeasurementTextField(
                                           labelText: "دامن /Daaman",
-                                          controller:
-                                              suitdamanController),
+                                          controller: suitdamanController),
                                     ),
                                     SizedBox(
                                       width: 10,
@@ -1272,8 +1250,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     Expanded(
                                       child: MeasurementTextField(
                                           labelText: "شلوار /Pants",
-                                          controller:
-                                              suitshalwarController),
+                                          controller: suitshalwarController),
                                     ),
                                     SizedBox(
                                       width: 10,
@@ -1281,8 +1258,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     Expanded(
                                       child: MeasurementTextField(
                                           labelText: "پنچا /Pancha",
-                                          controller:
-                                              suitpanchaController),
+                                          controller: suitpanchaController),
                                     ),
                                   ],
                                 ),
@@ -1290,7 +1266,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   height: 10,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
                                       children: [
@@ -1446,35 +1423,35 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                 //   iconData: Icons.play_circle_outline,
                                 //   iconDataa: Icons.delete_outline,
                                 // ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    'SELECT THE CLOTH IMAGE HERE',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                ClothImageContainer(
-                                    child: Column(
-                                  children: [
-                                    Image.asset(
-                                      'images/cloth.jpeg',
-                                      width: double.infinity,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              .3,
-                                      fit: BoxFit.cover,
-                                    )
-                                  ],
-                                ))
+                                // SizedBox(
+                                //   height: 15,
+                                // ),
+                                // Align(
+                                //   alignment: Alignment.topLeft,
+                                //   child: Text(
+                                //     'SELECT THE CLOTH IMAGE HERE',
+                                //     style: TextStyle(
+                                //         color: Colors.black,
+                                //         fontSize: 18,
+                                //         fontWeight: FontWeight.bold),
+                                //   ),
+                                // ),
+                                // SizedBox(
+                                //   height: 5,
+                                // ),
+                                // ClothImageContainer(
+                                //     child: Column(
+                                //   children: [
+                                //     Image.asset(
+                                //       'images/cloth.jpeg',
+                                //       width: double.infinity,
+                                //       height:
+                                //           MediaQuery.of(context).size.height *
+                                //               .3,
+                                //       fit: BoxFit.cover,
+                                //     )
+                                //   ],
+                                // ))
                               ],
                             ),
                           ),
@@ -1513,43 +1490,93 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                         .read<UploadImgProvider>()
                         .uploadCustomerImage(phonecontroller.text.trim());
 
-                    await context
-                        .read<CustomerRecordProvider>()
-                        .addCustomerRecord(
 
-                      Name: Namecontroller.text.trim(),
-                      phone:phonecontroller.text.trim(),
-                      address: addresscontroller.text.trim(),
-                      Gender: Gender.toString(),
-
-                      OrderDate: Orderdatecontroller.text.trim(),
-                      DeliveryDate: Deliverydatecontroller.text.trim(),
-                      paymentStatus: pamentstatus,
-                      orderStatus: orderstatus,
-                      selectWorker: selectworker,
-                      selectmeasurement: selectmeasurement.toString(),
-                      suitquantity: shkamizquantity.text.trim(),
-                      suitamount: shkamizamount.text.trim(),
-                      suitlength: suitlengthController.text.trim(),
-                      suitsleeveLength: suitsleeveController.text.trim(),
-suitShoulder: suitshoulderController.text.trim(),
-suitkalar: suitkalarController.text.trim(),
-suitchati: suitchestController.text.trim(),
-suitbaghal: suitarmholeController.text.trim(),
-suitdaman: suitdamanController.text.trim(),
-suitshalwar: suitshalwarController.text.trim(),
-suitpancha: suitpanchaController.text.trim(),
-chorasdaman: chorasdaman,
-                      goaldaman: goaldaman,
-                      sidepocket: sidesuitpocket,
-                      suitnotes: suitnotescontroller.text.trim(),
-                      context: context,
-
-                      frontpocket: frontsuitpocket,
-
+                    if(selectmeasurement=='SUITS'){
+                      await context
+                          .read<CustomerRecordProvider>()
+                          .addCustomerRecord(
+                          Name: Namecontroller.text.trim(),
+                          phone: phonecontroller.text.trim(),
+                          address: addresscontroller.text.trim(),
+                          Gender: Gender.toString(),
+                          OrderDate: Orderdatecontroller.text.trim(),
+                          DeliveryDate: Deliverydatecontroller.text.trim(),
+                          paymentStatus: pamentstatus,
+                          orderStatus: orderstatus,
+                          selectWorker: selectworker,
+                          selectmeasurement: selectmeasurement.toString(),
+                          suitquantity: shkamizquantity.text.trim(),
+                          suitamount: shkamizamount.text.trim(),
+                          suitlength: suitlengthController.text.trim(),
+                          suitsleeveLength: suitsleeveController.text.trim(),
+                          suitShoulder: suitshoulderController.text.trim(),
+                          suitkalar: suitkalarController.text.trim(),
+                          suitchati: suitchestController.text.trim(),
+                          suitbaghal: suitarmholeController.text.trim(),
+                          suitdaman: suitdamanController.text.trim(),
+                          suitshalwar: suitshalwarController.text.trim(),
+                          suitpancha: suitpanchaController.text.trim(),
+                          chorasdaman: chorasdaman,
+                          goaldaman: goaldaman,
+                          sidepocket: sidesuitpocket,
+                          suitnotes: suitnotescontroller.text.trim(),
+                          context: context,
+                          frontpocket: frontsuitpocket);
 
 
-                           );
+
+                    }
+                    if(selectmeasurement=='SHIRT'){
+                      await context
+                          .read<CustomerRecordProvider>()
+                          .addCustomerRecord(
+                          Name: Namecontroller.text.trim(),
+                          phone: phonecontroller.text.trim(),
+                          address: addresscontroller.text.trim(),
+                          Gender: Gender.toString(),
+                          OrderDate: Orderdatecontroller.text.trim(),
+                          DeliveryDate: Deliverydatecontroller.text.trim(),
+                          paymentStatus: pamentstatus,
+                          orderStatus: orderstatus,
+                          selectWorker: selectworker,
+                          selectmeasurement: selectmeasurement.toString(),
+
+                          context: context,
+                        shirtquantity: shirtquantitycontroller.text.trim(),
+                        shirtamount: shirtamountcontroller.text.trim(),
+                        shirtcollar: shirtcollarc.text.trim(),
+                        shirtchest: shirtcollarc.text.trim(),
+                        shirtwaist: shirtwaistc.text.trim(),
+                        shirtshoulder: shirtshoulderc.text.trim(),
+                        shirtsleeeve: shirtsleevec.text.trim(),
+                        shirtlength: shirtlengthc.text.trim(),
+                        addshirtnotes: addshirtnotecontroller.text.trim(),
+                        shirtfirst: firstshirt,
+                        shirtsecond: secondshirt,
+                        shirtthird: thirdshirt,
+                        shirtforth: fourthshirt
+
+                      );
+
+
+
+                    }
+
+                            //////////for shirt/////////////
+
+                            // shirtquantity: shirtquantitycontroller.text.trim(),
+                            // shirtamount: shirtamountcontroller.text.trim(),
+                            // shirtcollar: shirtcollarc.text.trim(),
+                            // shirtchest: shirtcollarc.text.trim(),
+                            // shirtwaist: shirtwaistc.text.trim(),
+                            // shirtshoulder: shirtshoulderc.text.trim(),
+                            // shirtsleeeve: shirtsleevec.text.trim(),
+                            // shirtlength: shirtlengthc.text.trim(),
+                            // addshirtnotes: addshirtnotecontroller.text.trim(),
+                            // shirtfirst: firstshirt,
+                            // shirtsecond: secondshirt,
+                            // shirtthird: thirdshirt,
+                            // shirtforth: fourthshirt);
 
                     ///
                   },

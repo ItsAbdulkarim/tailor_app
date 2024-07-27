@@ -54,7 +54,7 @@ class UpdateProvder extends ChangeNotifier {
       String selectedMeasurement = selectmeasurement.toString();
 
       Map<String, dynamic> updatedData = {
-        'customerimg': '',
+
         'name': Name.trim(),
         'phone': phone.trim(),
         'address': address.trim(),

@@ -142,7 +142,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     height: 20,
                   ),
                   CustomButton(
-                      color: Colors.blue,
+                      color: Color(0xFF7A7B80),
                       onPressed: () {
                         Get.to(PasswordRecoverSuccess());
                         validateform();
